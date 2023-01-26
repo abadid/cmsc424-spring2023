@@ -2,8 +2,8 @@
 
 Over the course of the semester, you will work with a variety of software packages, including PostgreSQL, Apache Spark, and others. Installing those packages and getting started can often be a hassle, because of software dependencies. You have three choices.
 
-* Install the different software packages on your own machine (most of these packages should have tutorials to install them on different OSs). If you have a Linux box or a Mac, this should be possible; it will be more difficult with Windows. In any case, although TAs would try their best, they would likely not be able to help you with any problems.
 * (**Preferred Option**) Use Docker (as discussed below). If you have a reasonably modern machine (within last 3-4 years), Docker should generally work fine, but with older laptops, the performance may not be as good. See below for more details on this.
+* Install the different software packages on your own machine (most of these packages should have tutorials to install them on different OSs). If you have a Linux box or a Mac, this should be possible; it will be more difficult with Windows. In any case, although TAs would try their best, they would likely not be able to help you with any problems.
 * Use a VM in the CS Department's Horvitz Cluster. Last year, only one person chose to use this, so we will likely do this on demand, if anyone is really interested. You can also similarly use a VM in Amazon or Microsoft Azure clusters -- both of them provide free VMs for beginning users. The problem with this approach is that you only have `ssh` access into that machine, so you can't run a web browser, etc., without some work.
 
 ---
@@ -31,10 +31,10 @@ You can do `git pull` (from within the `cmsc424-spring2019` directory) to fetch 
 
 [Docker](https://www.docker.com/) is a containerization platform that is used to package your application and all its dependencies together in the form of containers to make sure that your application works seamlessly in any environment which can be developed or tested or in production. We will provide `Dockerfile` for different assignments, that will help you start containers with the requisite packages installed.
 
-- In order to use this option, you have to first install Docker desktop on your machine (called `Host` henceforth). See the instructions on the [Docker website](https://www.docker.com/products/docker-desktop). 
+- In order to use this option, you have to first install Docker desktop on your machine (called `host` henceforth). See the instructions on the [Docker website](https://www.docker.com/products/docker-desktop). 
 - Docker makes things **super-easy**. We will provide you with appropriate setup files -- all you need to do is `docker build` and `docker run` to start the container. Specifically:
-   - In the git sub-directory `project0`, run `docker build -t "cmsc424" .`. This will build the image of the container you need to run.
-   - Run the docker image: `docker run --rm -ti -p 8888:8888 -p 5432:5432 cmsc424:latest`. This will start the container and load data into the postgres instance. 
+   - In the git sub-directory `project0`, run `docker build -t "cmsc424-project0" .` (NOTE: the dot in the end is important). This will build the image of the container you need to run.
+   - Run the docker image: `docker run --rm -ti -p 8888:8888 -p 5432:5432 cmsc424-project0:latest`. This will start the container and load data into the postgres instance. 
    - At this point, you will be in the docker container in the `/home/project0` directory. 
 - Some other docker commands that you would need to be familiar with:
    - `docker stop`:  Stops the running container. 
@@ -48,8 +48,8 @@ You can do `git pull` (from within the `cmsc424-spring2019` directory) to fetch 
 
 PostgreSQL is a full-fledged and powerful relational database system, and will be used for several assignments. 
 
-PostgreSQL is already installed on your container. To get started, start the container using `docker run`. 
-The current version of PostgreSQL is 10.1. However, the version installed on the containers is 9.3.24, the one available through `apt-get` right now. You will find the detailed documentation at: https://www.postgresql.org/docs/9.3/static/index.html. 
+PostgreSQL is already installed on your container. To get started, start the container using `docker run --rm -ti -p 8888:8888 -p 5432:5432 cmsc424-project0:latest`. 
+The current version of PostgreSQL is 15.1. However, the version installed on the containers is 14.6, the one available through `apt-get` right now. You will find the detailed documentation at: https://www.postgresql.org/docs/14/index.html. 
 
 If you are using docker, you can skip the rest of the intrsutctions to create and load the university database. However, its still useful to read the instructions to understand the steps involved in setting up a database instance. 
 
@@ -118,7 +118,7 @@ IPython is an enhanced command shell for Python, that offers enhanced introspect
 
 **IPython Notebook** started as a web browser-based interface to IPython, and proved especially popular with Data Scientists. A few years ago, the Notebook functionality was forked off as a separate project, called [Jupyter](http://jupyter.org/). Jupyter provides support for many other languages in addition to Python. 
 
-* Start the docker using `docker run`. Python, IPython, and Jupyter are already loaded.
+* Start the docker using `docker run --rm -ti -p 8888:8888 -p 5432:5432 cmsc424-project0:latest`. Python, IPython, and Jupyter are already loaded.
 
 * To use Python, you can just do `python` (or `ipython`), and it will start up the shell.
 
