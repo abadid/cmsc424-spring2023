@@ -22,6 +22,9 @@ EXPOSE 5432
 
 USER postgres
 
+RUN echo "listen_addresses = '*'" >> /etc/postgresql/14/main/postgresql.conf &&\
+    echo "host    all             all             0.0.0.0/0               scram-sha-256" >> /etc/postgresql/14/main/pg_hba.conf
+
 RUN /etc/init.d/postgresql start &&\
     createdb university &&\
     psql --command "\i /home/project0/DDL.sql;" university &&\
