@@ -9,9 +9,10 @@ from airports
 order by city;
 """
 
-### 1. Write a query to find the names of customers who have flights on a friday and first name that has a second letter is not a vowel.
-###    Do not include the youngest customer in the results.
-### Hint:  - See postgresql date operators that are linked to from the README, and the "like" operator that you saw already in the assigned reading in your textbook. 
+### 1. Write a query to find the names of customers who have flights on a friday and 
+###    first name that has a second letter is not a vowel.
+###    Do not include the youngest customer that satisfies the above conditions in the results.
+### Hint:  - See postgresql date operators that are linked to from the README, and the "like" operator (see Chapter 3.4.2). 
 ###        - Alternately, you can use a regex to match the condition imposed on the name.
 ###        - See postgresql date operators and string functions
 ###        - You may want to use a self-join to avoid including the youngest customer.
@@ -23,8 +24,9 @@ select 0;
 """
 
 
-### 2. Write a query to find unqiue customers who are frequent fliers on United Airlines (UA) and have their birthday in the second half of the year.
-### Hint: See postgresql date functions and distinct operator. Note that December has 31 days.
+### 2. Write a query to find customers who are frequent fliers on United Airlines (UA) 
+###    and have their birthday in the second half of the year.
+### Hint: See postgresql date functions.
 ### Order: by name
 ### Output columns: customer id, name, birthdate, frequentflieron
 queries[2] = """
@@ -42,8 +44,9 @@ select 0;
 
 ### 4. Write a query to find the names of customers with the least common frequent flier airline.
 ###    For example, if 10 customers have Delta as their frequent flier airline, and no other airlines have fewer than 10 frequent flier customers, 
-###    then the query should return all customers that have Delta as their frequent flier airline. In the case of a tie, return all customers from all tied airlines.
-### Hint: use `with clause` and nested queries
+###    then the query should return all customers that have Delta as their frequent flier airline. 
+###    In the case of a tie, return all customers from all tied airlines.
+### Hint: use `with clause` and nested queries (Chapter 3.8.6). 
 ### Output: only the names of the customer.
 ### Order: order by name.
 queries[4] = """
@@ -51,8 +54,11 @@ select 0;
 """
 
 
-### 5. Write a query to find all the frequent flyers (customer(s) who have flown on most number of flights),
-###    and the count of other frequent flyers they have never flown with.
+### 5. Write a query to find the most-frequent flyers (customers who have flown on most number of flights).
+###    In this dataset and in general, always assume that there could be multiple flyers who satisfy this condition.
+###    Assuming multiple customers exist, list the customer names along with the count of other frequent flyers
+###    they have never flown with.
+###    Two customers are said to have flown together when they have a flewon entry with a matching flightid and flightdate.
 ###    For example if Alice, Bob and Charlie flew on the most number of flighs (3 each). Assuming Alice and Bob never flew together,
 ###    while Charlie flew with both of them, the expected output would be: [('Alice', 1), ('Bob', 1), ('Charlie', 0)].
 ### NOTE: A frequent flyer here is purely based on number of occurances in flewon, (not the frequentflieron field).
