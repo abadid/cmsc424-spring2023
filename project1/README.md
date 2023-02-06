@@ -14,9 +14,14 @@ The following assumes you have gone through PostgreSQL instructions from Project
 **Note:** We will test your queries on a different, larger dataset.
 
 ### Getting started
-Similar to Project0, you will build the container with `docker build -t "cmsc424-project1" .` in the `project1` directory. Next you will need to start the container using `docker run -v $PWD:/home/project1 -ti -p 8888:8888 -p 5432:5432 cmsc424-project1:latest`. Alternately, if you are using your host machine to start the PostgreSQL server, follow the instructions mentioned in the [Project0 README](https://github.com/abadid/cmsc424-spring2023/tree/main/project0).
+Similar to Project0, you will build the container with `docker build -t "cmsc424-project1" .` in the `project1` directory. Next you will need to start the container using `docker run -v $PWD:/home/project1 -ti -p 8888:8888 -p 5432:5432 --name project1  cmsc424-project1:latest`. We have already created and loaded the flights database in the docker container. If you are using a native installation of postgres, will need to create and load the `flights` database using the `small.sql` file.  You can restart the continer with the following commands: 
+    ```
+    docker start project1
+    docker exec -it project1 /bin/bash
+    ```
 
-We have already created and loaded the flights database in the docker container. If you are using a native installation of postgres, will need to create and load the `flights` database using the `small.sql` file. 
+Alternately, if you are using your host machine to start the PostgreSQL server, follow the instructions mentioned in the [Project0 README](https://github.com/abadid/cmsc424-spring2023/tree/main/project0).
+
 
 If you run into any issues while creating, loading or accessing the database, please seek help from a TA.
 

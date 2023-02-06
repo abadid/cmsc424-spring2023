@@ -10,7 +10,8 @@ order by city;
 """
 
 ### 1. Write a query to find the names of customers who have flights on a friday and 
-###    first name that has a second letter is not a vowel.
+###    first name that has a second letter is not a vowel. If a customer who satisfies the condition
+###    flies on multiple fridays, output their name only once.
 ###    Do not include the youngest customer that satisfies the above conditions in the results.
 ### Hint:  - See postgresql date operators that are linked to from the README, and the "like" operator (see Chapter 3.4.2). 
 ###        - Alternately, you can use a regex to match the condition imposed on the name.
@@ -25,7 +26,7 @@ select 0;
 
 
 ### 2. Write a query to find customers who are frequent fliers on United Airlines (UA) 
-###    and have their birthday in the second half of the year.
+###    and have their birthday between 07/15 and 12/15 (mm/dd). 
 ### Hint: See postgresql date functions.
 ### Order: by name
 ### Output columns: customer id, name, birthdate, frequentflieron
@@ -75,7 +76,7 @@ select 0;
 ###     airport 		                              | participation
 ###     General Edward Lawrence Logan International   | .14
 ### Output: (airport_name, participation).
-### Order: Participation in descending order
+### Order: Participation in descending order, airport name
 ### Note: - The airport column must be the full name of the airport
 ###       - The participation percentage is rounded to 2 decimals, as shown above
 ###       - You do not need to confirm that the flights actually occur by referencing the flewon table. This query is only concerned with
@@ -93,7 +94,7 @@ queries[7] = """
 select 0;
 """
 
-### 8. Write a query to find customers that took flights over four consecutive days, but did not fly any other day.
+### 8. Write a query to find customers that took flights on four consecutive days, but did not fly any other day.
 ###    Return the name, start and end date of the customers flights.
 ### Output: customer_name, start_date, end_date
 ### Order: by customer_name
@@ -101,7 +102,11 @@ queries[8] = """
 select 0;
 """
 
-### 9. Write a query to find all flights belonging to the same airline that had a layover in JFK between 1 and 3 hours in length (inclusive)
+### 9. A layover consists of set of two flights where the destination of the first flight is the same 
+###    as the source of the second flight. Additiobally, the arrival of the first flight must be before the
+###    departure of the first flight. 
+###    Write a query to find all flights belonging to the same airline that had a layover in JFK between
+###    1 and 3 hours in length (inclusive).
 ### Output columns: 1st flight id, 2nd flight id, source city, destination city, layover duration
 ### Order by: layover duration
 queries[9] = """
