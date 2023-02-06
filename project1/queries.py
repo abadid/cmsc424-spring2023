@@ -12,7 +12,7 @@ order by city;
 ### 1. Write a query to find the names of customers who have flights on a friday and 
 ###    first name that has a second letter is not a vowel. If a customer who satisfies the condition
 ###    flies on multiple fridays, output their name only once.
-###    Do not include the youngest customer that satisfies the above conditions in the results.
+###    Do not include the youngest customer among those that satisfies the above conditions in the results.
 ### Hint:  - See postgresql date operators that are linked to from the README, and the "like" operator (see Chapter 3.4.2). 
 ###        - Alternately, you can use a regex to match the condition imposed on the name.
 ###        - See postgresql date operators and string functions
@@ -103,10 +103,10 @@ select 0;
 """
 
 ### 9. A layover consists of set of two flights where the destination of the first flight is the same 
-###    as the source of the second flight. Additiobally, the arrival of the first flight must be before the
+###    as the source of the second flight. Additionally, the arrival of the first flight must be before the
 ###    departure of the first flight. 
-###    Write a query to find all flights belonging to the same airline that had a layover in JFK between
-###    1 and 3 hours in length (inclusive).
+###    Write a query to find all pairs of flights belonging to the same airline that had a layover in JFK
+###    between 1 and 3 hours in length (inclusive).
 ### Output columns: 1st flight id, 2nd flight id, source city, destination city, layover duration
 ### Order by: layover duration
 queries[9] = """
