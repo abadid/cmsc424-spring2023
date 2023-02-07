@@ -47,8 +47,8 @@ This assignment invovles writing SQL queries over this dataset.  In many cases (
 
 Some of the queries require you to use string or date functions that were not in the assigned reading from your textbook. This will enable you to get some experience using DB documentation to help you to write queries. Some helpful links:
 
-- PostgreSQL date functions: https://www.postgresql.org/docs/9.1/functions-datetime.html
-- PostgreSQL string functions: https://www.postgresql.org/docs/9.1/functions-string.html
+- PostgreSQL date functions: https://www.postgresql.org/docs/current/functions-datetime.html
+- PostgreSQL string functions: https://www.postgresql.org/docs/current/functions-string.html
 - How to cast data types in PostgreSQL: http://www.postgresqltutorial.com/postgresql-cast/
 
 You don't have to use the "hints" if you don't want to; there might
