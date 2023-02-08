@@ -10,8 +10,8 @@ order by city;
 """
 
 ### 1. Write a query to find the names of customers who have flights on a friday and 
-###    first name that has a second letter is not a vowel. If a customer who satisfies the condition
-###    flies on multiple fridays, output their name only once.
+###    first name that has a second letter is not a vowel [a, e, i, o, u].
+###    If a customer who satisfies the condition flies on multiple fridays, output their name only once.
 ###    Do not include the youngest customer among those that satisfies the above conditions in the results.
 ### Hint:  - See postgresql date operators that are linked to from the README, and the "like" operator (see Chapter 3.4.2). 
 ###        - Alternately, you can use a regex to match the condition imposed on the name.
