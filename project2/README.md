@@ -18,6 +18,7 @@ Please do a `git pull` to download the directory `project2`. The files are:
 Similar to Project0, you will build the container with `docker build -t "cmsc424-project2" .` in the `project2` directory. Next you will need to start the container using `docker run -v $PWD:/home/project2 -ti -p 8888:8888 -p 5432:5432 --name project2  cmsc424-project2:latest`. We have already created and loaded the `flights` and `flighttrigger` database in the docker container.
 
 You can restart the container with the following commands:
+
     docker start project2
     docker exec -it project2 /bin/bash
 
@@ -43,21 +44,23 @@ If you run into any issues while creating, loading or accessing the database, pl
 
 </br>
 
-**Q1 (5pt)**. A flight has flown on a certain day if the flewon table contains at least one entry with the same flightid on
+**Q1 (5pt)**. A flight has flown on a certain day if the `flewon` table contains at least one entry with the same `flightid` on
 the given date. Write a query that uses an outer join to list all the flights that did not fly on August 5, 2016. 
 Output Column: `flightid`. Order By: `flightid`.
 
-**Q2 (5pt)**. Write a query to find the percentage participation of United Airlines in each airport, relative to the other airlines. 
- 6. Write a query to find the percentage participation of United Airlines in each airport, relative to the other airlines.
+**Q2 (5pt)**. Write a query to find the percentage participation of United Airlines in each airport, relative to the other airlines.
 One instance of participation in an airport is defined as a flight (EX. UA101) having a source or dest of that airport.
 If UA101 leaves BOS and arrives in FLL, that adds 1 to United's count for each airport.
 This means that if UA has 1 in BOS, AA has 1 in BOS, DL has 2 in BOS, and SW has 3 in BOS, the query returns:
-|  airport 		                                  | participation
-| General Edward Lawrence Logan International   | .14
+
+	| airport 		                                  | participation
+	| General Edward Lawrence Logan International   	  | .14
 
 Output: (airport_name, participation).
-Order: Participation in descending order, airport name
+Order: Participation in descending order, airport name.
+
 Note: 
+
 1. The airport column must be the full name of the airport <br />
 1. The participation percentage is rounded to 2 decimals, as shown above <br />
 1. You do not need to confirm that the flights actually occur by referencing the flewon table. This query is only concerned with flights that exist in the flights table. 
@@ -106,7 +109,7 @@ For this problem you are a database administrator who needs to deal with an issu
 
 The `points` columns of the `ffairlines` table is calculated as follows. A customer gets one point for each minute they spend on a flight with the given airline. The time spent on the airline is the difference of the local_arrival_time and  local_departing_time. (For simplicity, we ignore the time zones and simply calculate the difference in minutes). 
 
-Unfortuantely there are several apps that are using this schema, and some of them need some time before they can update their code to move to the new schema. In the meantime, they want to use the old schema. On the other hand, other apps need to use the new schema right away. We can't use views to solve this problem since both the apps that want to use the old schema and the apps that want to use the new schema want to insert new records into their respective schemas (see the discussion in the textbook about inserting data into views). 
+Unfortunately there are several apps that are using this schema, and some of them need some time before they can update their code to move to the new schema. In the meantime, they want to use the old schema. On the other hand, other apps need to use the new schema right away. We can't use views to solve this problem since both the apps that want to use the old schema and the apps that want to use the new schema want to insert new records into their respective schemas (see the discussion in the textbook about inserting data into views). 
 
 
 We can solve this using triggers!  We'll keep the old customers table around. And we'll give the new customers table a different name `newcustomers`. Originally it is populated with data from the original customers table (without the frequentflieron column which instead will be populated in the new ffairline table). 
@@ -123,86 +126,86 @@ Initially our database looks like this
 
 `customers`
 
- customerid |              name              | birthdate  | frequentflieron 
-------------+--------------------------------+------------+-----------------
- cust0      | Anthony Allen                  | 1985-05-14 | AA
- cust109    | James Adams                    | 1994-05-22 | AA
- cust15     | Betty Gonzalez                 | 1993-12-28 | SW
- cust33     | Christopher Davis              | 1984-05-13 | DL
+	 customerid |              name              | birthdate  | frequentflieron 
+	------------+--------------------------------+------------+-----------------
+	 cust0      | Anthony Allen                  | 1985-05-14 | AA
+	 cust109    | James Adams                    | 1994-05-22 | AA
+	 cust15     | Betty Gonzalez                 | 1993-12-28 | SW
+	 cust33     | Christopher Davis              | 1984-05-13 | DL
 
 `newcustomers`
 
- customerid |              name              | birthdate  
-------------+--------------------------------+------------
- cust0      | Anthony Allen                  | 1985-05-14
- cust109    | James Adams                    | 1994-05-22
- cust15     | Betty Gonzalez                 | 1993-12-28
- cust33     | Christopher Davis              | 1984-05-13
+	 customerid |              name              | birthdate  
+	------------+--------------------------------+------------
+	 cust0      | Anthony Allen                  | 1985-05-14
+	 cust109    | James Adams                    | 1994-05-22
+	 cust15     | Betty Gonzalez                 | 1993-12-28
+	 cust33     | Christopher Davis              | 1984-05-13
 
 `ffairlines`
 
- customerid | airlineid | points 
-------------+-----------+--------
- cust0      | AA        |     82
- cust109    | AA        |     59
- cust15     | SW        |    827
- cust33     | DL        |    524
+	 customerid | airlineid | points 
+	------------+-----------+--------
+	 cust0      | AA        |     82
+	 cust109    | AA        |     59
+	 cust15     | SW        |    827
+	 cust33     | DL        |    524
 
 
 First, let's delete `(cust109, James Adams, 1994-05-22, AA )` from `customers`, we then have:
 
 `customers`
 
- customerid |              name              | birthdate  | frequentflieron 
-------------+--------------------------------+------------+-----------------
- cust0      | Anthony Allen                  | 1985-05-14 | AA
- cust15     | Betty Gonzalez                 | 1993-12-28 | SW
- cust33     | Christopher Davis              | 1984-05-13 | DL
+	 customerid |              name              | birthdate  | frequentflieron 
+	------------+--------------------------------+------------+-----------------
+	 cust0      | Anthony Allen                  | 1985-05-14 | AA
+	 cust15     | Betty Gonzalez                 | 1993-12-28 | SW
+	 cust33     | Christopher Davis              | 1984-05-13 | DL
 
 `newcustomers`
 
- customerid |              name              | birthdate  
-------------+--------------------------------+------------
- cust0      | Anthony Allen                  | 1985-05-14
- cust15     | Betty Gonzalez                 | 1993-12-28
- cust33     | Christopher Davis              | 1984-05-13
+	 customerid |              name              | birthdate  
+	------------+--------------------------------+------------
+	 cust0      | Anthony Allen                  | 1985-05-14
+	 cust15     | Betty Gonzalez                 | 1993-12-28
+	 cust33     | Christopher Davis              | 1984-05-13
 
 `ffairlines`
 
- customerid | airlineid | points 
-------------+-----------+--------
- cust0      | AA        |     82
- cust15     | SW        |    827
- cust33     | DL        |    524
+	 customerid | airlineid | points 
+	------------+-----------+--------
+	 cust0      | AA        |     82
+	 cust15     | SW        |    827
+	 cust33     | DL        |    524
 
 
 Next let's insert `(cust102, George Gonzalez, 1996-01-30)` into `newcustomers`, we then have:
 
 `customers`
 
- customerid |              name              | birthdate  | frequentflieron 
-------------+--------------------------------+------------+-----------------
- cust0      | Anthony Allen                  | 1985-05-14 | AA
- cust15     | Betty Gonzalez                 | 1993-12-28 | SW
- cust33     | Christopher Davis              | 1984-05-13 | DL
- cust102    | George Gonzalez                | 1996-01-30 | 
+	 customerid |              name              | birthdate  | frequentflieron 
+	------------+--------------------------------+------------+-----------------
+	 cust0      | Anthony Allen                  | 1985-05-14 | AA
+	 cust15     | Betty Gonzalez                 | 1993-12-28 | SW
+	 cust33     | Christopher Davis              | 1984-05-13 | DL
+	 cust102    | George Gonzalez                | 1996-01-30 | 
 
 `newcustomers`
 
- customerid |              name              | birthdate  
-------------+--------------------------------+------------
- cust0      | Anthony Allen                  | 1985-05-14
- cust15     | Betty Gonzalez                 | 1993-12-28
- cust33     | Christopher Davis              | 1984-05-13
- cust102    | George Gonzalez                | 1996-01-30
+	 customerid |              name              | birthdate  
+	------------+--------------------------------+------------
+	 cust0      | Anthony Allen                  | 1985-05-14
+	 cust15     | Betty Gonzalez                 | 1993-12-28
+	 cust33     | Christopher Davis              | 1984-05-13
+	 cust102    | George Gonzalez                | 1996-01-30
 
 `ffairlines`
 
- customerid | airlineid | points 
-------------+-----------+--------
- cust0      | AA        |     82
- cust15     | SW        |    827
- cust33     | DL        |    524
+	 customerid | airlineid | points 
+	------------+-----------+--------
+	 cust0      | AA        |     82
+	 cust15     | SW        |    827
+	 cust33     | DL        |    524
 
 
 Note: George's frequentflieron column is null in `customers` because we inserted his info into the `newcustomers` table but didn't add any entries in `ffairlines`.
@@ -211,31 +214,31 @@ Next let's assume that George plans to take a lot of flights on Delta so he deci
 
 `customers`
 
- customerid |              name              | birthdate  | frequentflieron 
-------------+--------------------------------+------------+-----------------
- cust0      | Anthony Allen                  | 1985-05-14 | AA
- cust15     | Betty Gonzalez                 | 1993-12-28 | SW
- cust33     | Christopher Davis              | 1984-05-13 | DL
- cust102    | George Gonzalez                | 1996-01-30 | DL
+	 customerid |              name              | birthdate  | frequentflieron 
+	------------+--------------------------------+------------+-----------------
+	 cust0      | Anthony Allen                  | 1985-05-14 | AA
+	 cust15     | Betty Gonzalez                 | 1993-12-28 | SW
+	 cust33     | Christopher Davis              | 1984-05-13 | DL
+	 cust102    | George Gonzalez                | 1996-01-30 | DL
 
 
 `newcustomers`
 
- customerid |              name              | birthdate  
-------------+--------------------------------+------------
- cust0      | Anthony Allen                  | 1985-05-14
- cust15     | Betty Gonzalez                 | 1993-12-28
- cust33     | Christopher Davis              | 1984-05-13
- cust102    | George Gonzalez                | 1996-01-30
+	 customerid |              name              | birthdate  
+	------------+--------------------------------+------------
+	 cust0      | Anthony Allen                  | 1985-05-14
+	 cust15     | Betty Gonzalez                 | 1993-12-28
+	 cust33     | Christopher Davis              | 1984-05-13
+	 cust102    | George Gonzalez                | 1996-01-30
 
 `ffairlines`
 
- customerid | airlineid | points 
-------------+-----------+--------
- cust0      | AA        |     82
- cust15     | SW        |    827
- cust33     | DL        |    524
- cust102    | DL        |      0
+	 customerid | airlineid | points 
+	------------+-----------+--------
+	 cust0      | AA        |     82
+	 cust15     | SW        |    827
+	 cust33     | DL        |    524
+	 cust102    | DL        |      0
 
 
 Note: We added DL as George's frequent flier airline because it is his only frequent flier airline.
@@ -244,33 +247,34 @@ Lastly let's say  Anthony Allen becomes a South West frequent flier in addition 
 
 `customers`
 
- customerid |              name              | birthdate  | frequentflieron 
-------------+--------------------------------+------------+-----------------
- cust0      | Anthony Allen                  | 1985-05-14 | SW
- cust15     | Betty Gonzalez                 | 1993-12-28 | SW
- cust33     | Christopher Davis              | 1984-05-13 | DL
- cust102    | George Gonzalez                | 1996-01-30 | DL
+	 customerid |              name              | birthdate  | frequentflieron 
+	------------+--------------------------------+------------+-----------------
+	 cust0      | Anthony Allen                  | 1985-05-14 | SW
+	 cust15     | Betty Gonzalez                 | 1993-12-28 | SW
+	 cust33     | Christopher Davis              | 1984-05-13 | DL
+	 cust102    | George Gonzalez                | 1996-01-30 | DL
+
 `newcustomers`
 
- customerid |              name              | birthdate  
-------------+--------------------------------+------------
- cust0      | Anthony Allen                  | 1985-05-14
- cust15     | Betty Gonzalez                 | 1993-12-28
- cust33     | Christopher Davis              | 1984-05-13
- cust102    | George Gonzalez                | 1996-01-30
+	 customerid |              name              | birthdate  
+	------------+--------------------------------+------------
+	 cust0      | Anthony Allen                  | 1985-05-14
+	 cust15     | Betty Gonzalez                 | 1993-12-28
+	 cust33     | Christopher Davis              | 1984-05-13
+	 cust102    | George Gonzalez                | 1996-01-30
 
 `ffairlines`
 
- customerid | airlineid | points 
-------------+-----------+--------
- cust0      | AA        |     82
- cust15     | SW        |    827
- cust33     | DL        |    524
- cust102    | DL        |      0
- cust0      | SW        |    723
+	 customerid | airlineid | points 
+	------------+-----------+--------
+	 cust0      | AA        |     82
+	 cust15     | SW        |    827
+	 cust33     | DL        |    524
+	 cust102    | DL        |      0
+	 cust0      | SW        |    723
 
 
-Note: We updated Anthony's frequentflieron airline.  This may not always happen.  By looking at the `flewon` table (not shown here) we saw that Anthony flew on more SW flights than AA flights so we updated her frequentflieron.  If we had found that he had flown on more AA flights than SW flights then there would be no changes in the `customers` table.  
+Note: We updated Anthony's frequentflieron airline.  This may not always happen.  By looking at the `flewon` table (not shown here) we saw that Anthony flew on more SW flights than AA flights so we updated her frequentflieron.  If we had found that he had flown on more AA flights than SW flights then there would be no changes in the `customers` table.
 
 Switch to the `flighttrigger` database (i.e. exit out of the flights database and run `psql flighttrigger`). Execute `\i trigger-database.sql` The trigger code should be submitted in `trigger.sql` file. Running `psql -f trigger.sql flighttrigger` should generate the trigger without errors.
 
