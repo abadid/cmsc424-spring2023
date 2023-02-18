@@ -114,18 +114,18 @@ cur.execute("insert into flewon values ('SW110', 'cust4', to_date('2016-08-02', 
 cur.execute("insert into flewon values ('SW106', 'cust4', to_date('2016-08-06', 'YYYY-MM-DD'))")
 cur.execute("insert into flewon values ('UA138', 'cust4', to_date('2016-08-09', 'YYYY-MM-DD'))")
 cur.execute("insert into flewon values ('SW107', 'cust4', to_date('2016-08-07', 'YYYY-MM-DD'))")
-cur.execute("INSERT into ffairlines values ('cust4', 'AA')")
+cur.execute("INSERT into ffairlines VALUES ('cust4', 'AA', (select coalesce(sum(trunc(extract(epoch from local_arrival_time - local_departing_time)/60)), 0) from flewon natural join flights where customerid = 'cust4' AND airlineid = 'AA'));")
 conn.commit()
 
 printAll('After setting cust4 ff airline as AA. frequentflieron in customer should also be AA')
 
 print('Updating AA to be SW instead for cust4 in ffairlines')
-cur.execute("UPDATE ffairlines set airlineid = 'SW' where customerid = 'cust4' and airlineid = 'AA'")
+cur.execute("UPDATE ffairlines set airlineid = 'SW', points = (select coalesce(sum(trunc(extract(epoch from local_arrival_time - local_departing_time)/60)), 0) from flewon natural join flights where customerid = 'cust4' AND airlineid = 'SW') where customerid = 'cust4' and airlineid = 'AA'")
+conn.commit()
 
 printAll('after updating AA to SW as ff airline.  SW should now be the frequentflieron for cust4')
 
-print("Inserting ('cust4', 'AA') into ffairline for cust4")
-cur.execute("INSERT into ffairlines values ('cust4', 'AA')")
+cur.execute("INSERT into ffairlines VALUES ('cust4', 'AA', (select coalesce(sum(trunc(extract(epoch from local_arrival_time - local_departing_time)/60)), 0) from flewon natural join flights where customerid = 'cust4' AND airlineid = 'AA'));")
 conn.commit()
 
 printAll("With AA and SW as ffairlines for cust4,  It should still be SW for frequentflieron because cust4 took more SW flights")
@@ -144,16 +144,16 @@ print("------------------- CONTINUING WITH OPERATIONS ON FLEWON ----------------
 
 
 print("Adding both UA and AA as ff airlines for cust4")
-cur.execute("INSERT into ffairlines values ('cust4', 'UA')")
-cur.execute("INSERT into ffairlines values ('cust4', 'AA')")
+cur.execute("INSERT into ffairlines VALUES ('cust4', 'UA', (select coalesce(sum(trunc(extract(epoch from local_arrival_time - local_departing_time)/60)), 0) from flewon natural join flights where customerid = 'cust4' AND airlineid = 'UA'));")
+cur.execute("INSERT into ffairlines VALUES ('cust4', 'AA', (select coalesce(sum(trunc(extract(epoch from local_arrival_time - local_departing_time)/60)), 0) from flewon natural join flights where customerid = 'cust4' AND airlineid = 'AA'));")
 conn.commit()
 
 printAll("Initial state. NOTE: cust4 has 2 fffairlines.  The frequentflieron airline should be UA.")
 
 print("Now removing a single UA flight in flewon for cust 4")
-cur.execute("DELETE from flewon where customerid = 'cust4' and flightid = 'UA101'")
+cur.execute("DELETE from flewon where customerid = 'cust4' and flightid = 'UA138'")
 
-printAll("Deleted single UA flight and now there are the same number of flights for UA and AA for cust 4")
+printAll("Deleted single UA flight and cust 4 has more points in AA")
 
 print("updating an AA flight to be SW instead")
 cur.execute("UPDATE flewon set flightid = 'SW132' where customerid = 'cust4' and flightid = 'AA131'")
