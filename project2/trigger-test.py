@@ -1,24 +1,23 @@
 import psycopg2
-import os
-import sys
 import subprocess
-import pprint
-
-
-pp = pprint.PrettyPrinter(indent=3)
+from tabulate import tabulate
 
 def executePrint(s):
 	cur.execute(s)
-	pp.pprint(cur.fetchall())
+	print(tabulate(cur.fetchall()))
 
 def printAll(s):
     print(s)
-    print("~~~~~~~~~~CUSTOMERS~~~~~~~~~~")
+    print()
+    print("CUSTOMERS")
     executePrint("select * from customers")
-    print("~~~~~~~~~~NEWCUSTOMERS~~~~~~~~~~")
+    print()
+    print("NEWCUSTOMERS")
     executePrint("select * from newcustomers")
-    print("~~~~~~~~~~FFAIRLINES~~~~~~~~~~")
+    print()
+    print("FFAIRLINES")
     executePrint("select * from ffairlines")
+    print()
 
 subprocess.call(["dropdb", "flighttrigger"])
 subprocess.call(["createdb", "flighttrigger"])

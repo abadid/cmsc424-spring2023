@@ -9,7 +9,7 @@ RUN apt install -y python3-pip python3-dev
 RUN apt install python-is-python3
 RUN apt install -y build-essential vim 
 RUN apt install -y sudo curl systemctl
-RUN pip3 install ipython-sql==0.4.1 psycopg2==2.9.5 SQLAlchemy==1.4.46
+RUN pip3 install ipython-sql==0.4.1 psycopg2==2.9.5 SQLAlchemy==1.4.46 tabulate
 
 ADD *.sql /home/project2/
 ADD *.py /home/project2/

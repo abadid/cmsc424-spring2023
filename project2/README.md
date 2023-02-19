@@ -15,7 +15,7 @@ Please do a `git pull` to download the directory `project2`. The files are:
 1. Dockerfile: A dockerfile that creates a container with the required databases and populates some of them.
 
 ### Getting started
-Similar to Project0, you will build the container with `docker build -t "cmsc424-project2" .` in the `project2` directory. Next you will need to start the container using `docker run -v $PWD:/home/project2 -ti -p 8888:8888 -p 5432:5432 --name project2  cmsc424-project2:latest`. We have already created and loaded the `flights` and `flighttrigger` database in the docker container.
+Similar to Project0, you will build the container with `docker build -t "cmsc424-project2" .` in the `project2` directory. Next you will need to start the container using `docker run -v "${PWD}:/home/project2" -ti -p 8888:8888 -p 5432:5432 --name project2  cmsc424-project2:latest` (if you're using cmd on Windows, replace `${PWD}` with `%cd%`). We have already created and loaded the `flights` and `flighttrigger` database in the docker container.
 
 You can restart the container with the following commands:
 
@@ -61,10 +61,10 @@ Order: Participation in descending order, airport name.
 
 Note: 
 
+1. This is the same query 6 from project 1. **The only difference is you should not use outer join for this query.**
 1. The airport column must be the full name of the airport <br />
 1. The participation percentage is rounded to 2 decimals, as shown above <br />
 1. You do not need to confirm that the flights actually occur by referencing the flewon table. This query is only concerned with flights that exist in the flights table. 
-1. This is the same query 6 from project 1. **The only difference is you should not use outer join for this query.**
 
 _HINT:_ Use Scalar subqueries to identify the number of flights that fly through each airport.  
 
@@ -73,7 +73,7 @@ _HINT:_ Use Scalar subqueries to identify the number of flights that fly through
   1. have taken a flight at least once and at most five times, 
   1. have never taken a flight in or out of `IAD`.
 
-Note that your query should **only use** the following views which are defined as:
+You're given the following views. You don't need to include them in the `queries.py` file, but you need to create them manually if you want to test your query in `psql`. 
 
 ```
 create view customer_flight as
@@ -90,6 +90,8 @@ order by flightid;
 
 The `customer_flight` view lists all the customers who are born in or before 1970 and the flightid of the flights that the customer has taken. The `flight_IAD` view lists all the flights that fly in or out of IAD.
 
+Explain why the following query does not work? Include your explanation as a comment in the `queries.py` file.
+
 ```
 select cid 
 from customer_flight c left join flight_IAD i 
@@ -99,9 +101,7 @@ group by cid
 having count(*) <= 5;
 ```
 
-Why doesn't this query work for all cases? Explain. Include the explaination as a comment on the queries.py file.
-
-Modify the above query to produce the correct output. You can only use additional subqueries; however, you may not use any other tables. Order of the output does not matter.
+Modify the above query to produce the correct output. You can only use additional predicates and subqueries; however, you may not use any other tables. Order of the output does not matter.
 
 **Q4 (22pt)**.[Trigger]
 
@@ -112,10 +112,10 @@ The `points` columns of the `ffairlines` table is calculated as follows. A custo
 Unfortunately there are several apps that are using this schema, and some of them need some time before they can update their code to move to the new schema. In the meantime, they want to use the old schema. On the other hand, other apps need to use the new schema right away. We can't use views to solve this problem since both the apps that want to use the old schema and the apps that want to use the new schema want to insert new records into their respective schemas (see the discussion in the textbook about inserting data into views). 
 
 
-We can solve this using triggers!  We'll keep the old customers table around. And we'll give the new customers table a different name `newcustomers`. Originally it is populated with data from the original customers table (without the frequentflieron column which instead will be populated in the new ffairline table). 
+We can solve this using triggers!  We'll keep the old customers table around. And we'll give the new customers table a different name `newcustomers`. Originally it is populated with data from the original customers table (without the `frequentflieron` column which instead will be populated in the new ffairline table). 
 
 You need to write triggers that do the following:
-1. Whenever an app inserts/updates/deletes data into the `customers` table, a trigger is fired that does the same corresponding action for the copy of the data in the `newcustomers` and `ffairline` tables.  On inserts into the `customers` table, the value for frequentflieron should result on an insertion into `ffairlines` of (customerid, frequentflieron, points).  If frequentflieron is NULL you should NOT add (customerid, NULL, NULL) to the `ffairlines` table.  Similarly, on updates to frequentflieron in the old customers table, a tuple should be inserted into `ffairlines` of (customerid, updated value of frequentflieron, points) --- but you wouldn't delete/change any other rows in ffairlines for that customer.  However, if frequentflieron is updated to NULL, then you should delete all entries in `ffairlines` for that customer.
+1. Whenever an app inserts/updates/deletes data into the `customers` table, a trigger is fired that does the same corresponding action for the copy of the data in the `newcustomers` and `ffairline` tables.  On inserts into the `customers` table, the value for `frequentflieron` should result in an insertion into `ffairlines` of (customerid, frequentflieron, points).  If `frequentflieron` is NULL you should NOT add (customerid, NULL, NULL) to the `ffairlines` table.  Similarly, on updates to `frequentflieron` in the old customers table, a tuple should be inserted into `ffairlines` of (customerid, updated value of frequentflieron, points) --- but you wouldn't delete/change any other rows in `ffairlines` for that customer.  However, if `frequentflieron` is updated to NULL, then you should delete all entries in `ffairlines` for that customer.
 1. Whenever an app inserts/updates/deletes data into the `newcustomers` table, a trigger is fired that does the same corresponding action for the copy of the data in the `customers` table. The value of the `frequentflieron` column in the `customers` table is the airline frequently travelled airline for that customer (based on the values of the `points` column in the `ffairline` table). If there are no frequent flier airlines for that customer, then the `frequentflieron` column must be set to NULL. In the case of a tie, the one that is smallest lexicographically is chosen. 
 1. We also need a trigger on the new `ffairline` table to update the value of the `frequentflieron` column of the old customers table if the value should change as a result of the insert/delete/update to the ffairline table.
 1. Since the `flewon` table can affect the choice of which airline should be listed as the `frequentflieron` value in the old customers table, we also need a trigger on the `flewon` table if as as result of the insert/update/delete to the table, the `frequentflieron` value needs to be changed in the old customers table. 
@@ -274,7 +274,7 @@ Lastly let's say  Anthony Allen becomes a South West frequent flier in addition 
 	 cust0      | SW        |    723
 
 
-Note: We updated Anthony's frequentflieron airline.  This may not always happen.  By looking at the `flewon` table (not shown here) we saw that Anthony flew on more SW flights than AA flights so we updated her frequentflieron.  If we had found that he had flown on more AA flights than SW flights then there would be no changes in the `customers` table.
+Note: We updated Anthony's `frequentflieron` airline.  This may not always happen.  By looking at the `flewon` table (not shown here) we saw that Anthony flew on more SW flights than AA flights so we updated her `frequentflieron`.  If we had found that he had flown on more AA flights than SW flights then there would be no changes in the `customers` table.
 
 Switch to the `flighttrigger` database (i.e. exit out of the flights database and run `psql flighttrigger`). Execute `\i trigger-database.sql` The trigger code should be submitted in `trigger.sql` file. Running `psql -f trigger.sql flighttrigger` should generate the trigger without errors.
 
@@ -288,10 +288,11 @@ psql -f trigger.sql flighttrigger
 ```
 All of those commands are executed for you in the script.
 
-We will be grading this assignment using the same trigger-test.py file but with different data.
+We will be grading this assignment using the same `trigger-test.py` file but with different data.
 
-In the following link, you’ll find some useful trigger examples. https://www.postgresql.org/docs/9.2/static/plpgsql-trigger.html 
-https://stackoverflow.com/questions/708562/prevent-recursive-trigger-in-postgresql
+Some useful trigger examples:
++ https://www.postgresql.org/docs/14/plpgsql-trigger.html 
++ https://stackoverflow.com/questions/708562/prevent-recursive-trigger-in-postgresql
 
 
 ### Submission
