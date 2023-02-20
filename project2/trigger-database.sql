@@ -1,11 +1,3 @@
-drop table flewon;
-drop table flights;
-drop table customers;
-drop table airlines;
-drop table airports;
-drop table newcustomers;
-drop table ffairlines;
-
 create table airports (airportid char(3) primary key, city char(20), name char(100), total2011 int, total2012 int);
 insert into airports(name, city, airportid, total2011, total2012) values('Metropolitan Oakland International','Oakland','OAK',10040864,9266570);
 insert into airports(name, city, airportid, total2011, total2012) values('Fort Lauderdale Hollywood International','Fort Lauderdale','FLL',23569103,23349835);
@@ -161,4 +153,5 @@ create table ffairlines (customerid char(10) references newcustomers ON DELETE C
 insert into ffairlines (with temp as (select customerid, airlineid, SUM(TRUNC(EXTRACT(EPOCH FROM local_arrival_time - local_departing_time)/60)) as points
         from flewon natural join flights group by customerid, airlineid)
     select customers.customerid, frequentflieron, coalesce(points,0) 
-    from customers left join temp on (customers.customerid = temp.customerid and customers.frequentflieron = temp.airlineid));
+    from customers left join temp on (customers.customerid = temp.customerid and customers.frequentflieron = temp.airlineid)
+    where frequentflieron is not null);

@@ -88,7 +88,7 @@ where source = 'IAD' or dest = 'IAD'
 order by flightid;
 ```
 
-The `customer_flight` view lists all the customers who are born in or before 1970 and the flightid of the flights that the customer has taken. The `flight_IAD` view lists all the flights that fly in or out of IAD.
+**Q3.1 (3 pt)**. The `customer_flight` view lists all the customers who are born in or before 1970 and the flightid of the flights that the customer has taken. The `flight_IAD` view lists all the flights that fly in or out of IAD.
 
 Explain why the following query does not work? Include your explanation as a comment in the `queries.py` file.
 
@@ -101,7 +101,7 @@ group by cid
 having count(*) <= 5;
 ```
 
-Modify the above query to produce the correct output. You can only use additional predicates and subqueries; however, you may not use any other tables. Order of the output does not matter.
+**Q3.2 (5 pt)**. Modify the above query to produce the correct output. You can only use additional predicates and subqueries; however, you may not use any other tables. Order of the output does not matter.
 
 **Q4 (22pt)**.[Trigger]
 
@@ -115,10 +115,10 @@ Unfortunately there are several apps that are using this schema, and some of the
 We can solve this using triggers!  We'll keep the old customers table around. And we'll give the new customers table a different name `newcustomers`. Originally it is populated with data from the original customers table (without the `frequentflieron` column which instead will be populated in the new ffairline table). 
 
 You need to write triggers that do the following:
-1. Whenever an app inserts/updates/deletes data into the `customers` table, a trigger is fired that does the same corresponding action for the copy of the data in the `newcustomers` and `ffairline` tables.  On inserts into the `customers` table, the value for `frequentflieron` should result in an insertion into `ffairlines` of (customerid, frequentflieron, points).  If `frequentflieron` is NULL you should NOT add (customerid, NULL, NULL) to the `ffairlines` table.  Similarly, on updates to `frequentflieron` in the old customers table, a tuple should be inserted into `ffairlines` of (customerid, updated value of frequentflieron, points) --- but you wouldn't delete/change any other rows in `ffairlines` for that customer.  However, if `frequentflieron` is updated to NULL, then you should delete all entries in `ffairlines` for that customer.
-1. Whenever an app inserts/updates/deletes data into the `newcustomers` table, a trigger is fired that does the same corresponding action for the copy of the data in the `customers` table. The value of the `frequentflieron` column in the `customers` table is the airline frequently travelled airline for that customer (based on the values of the `points` column in the `ffairline` table). If there are no frequent flier airlines for that customer, then the `frequentflieron` column must be set to NULL. In the case of a tie, the one that is smallest lexicographically is chosen. 
-1. We also need a trigger on the new `ffairline` table to update the value of the `frequentflieron` column of the old customers table if the value should change as a result of the insert/delete/update to the ffairline table.
-1. Since the `flewon` table can affect the choice of which airline should be listed as the `frequentflieron` value in the old customers table, we also need a trigger on the `flewon` table if as as result of the insert/update/delete to the table, the `frequentflieron` value needs to be changed in the old customers table. 
+1. **(9 pt)** Whenever an app inserts/updates/deletes data into the `customers` table, a trigger is fired that does the same corresponding action for the copy of the data in the `newcustomers` and `ffairline` tables.  On inserts into the `customers` table, the value for `frequentflieron` should result in an insertion into `ffairlines` of (customerid, frequentflieron, points).  If `frequentflieron` is NULL you should NOT add (customerid, NULL, NULL) to the `ffairlines` table.  Similarly, on updates to `frequentflieron` in the old customers table, a tuple should be inserted into `ffairlines` of (customerid, updated value of frequentflieron, points) --- but you wouldn't delete/change any other rows in `ffairlines` for that customer.  However, if `frequentflieron` is updated to NULL, then you should delete all entries in `ffairlines` for that customer.
+1. **(3 pt)** Whenever an app inserts/updates/deletes data into the `newcustomers` table, a trigger is fired that does the same corresponding action for the copy of the data in the `customers` table. The value of the `frequentflieron` column in the `customers` table is the airline frequently travelled airline for that customer (based on the values of the `points` column in the `ffairline` table). If there are no frequent flier airlines for that customer, then the `frequentflieron` column must be set to NULL. In the case of a tie, the one that is smallest lexicographically is chosen. 
+1. **(5 pt)** We also need a trigger on the new `ffairline` table to update the value of the `frequentflieron` column of the old customers table if the value should change as a result of the insert/delete/update to the ffairline table.
+1. **(5 pt)** Since the `flewon` table can affect the choice of which airline should be listed as the `frequentflieron` value in the old customers table, we also need a trigger on the `flewon` table if as as result of the insert/update/delete to the table, the `frequentflieron` value needs to be changed in the old customers table. 
 
 Here's an example (`flewon` table not shown):
 
