@@ -68,6 +68,7 @@ Note:
 In project 1, you were allowed to write this query any way that you want. For this project, we want to give you some practice using correlated subqueries, so we are going to write the same query, but this time using correlated queries. In class, we saw an example of using correlated queries in the **WHERE** clause. However, for this query, we're going to use a correlated query in the **SELECT** clause. 
 
 Start with the following query:
+```
 select name, count(*)
 from (select source as airportid from flights union all select dest as airportid from flights) as airportidunion
 	natural join airports
