@@ -103,7 +103,7 @@ printAll("After updating name, Update should appear in both customer tables")
 
 print("------------------- CONTINUING WITH OPERATIONS ON FFAIRLINES -------------------")
 
-print("Adding cust4's flights to flewon table and after that adding ffairline as AA")
+print("Adding cust4's flights to flewon table and subsequently adding ffairline as AA")
 cur.execute("insert into flewon values ('SW132', 'cust4', to_date('2016-08-05', 'YYYY-MM-DD'))")
 cur.execute("insert into flewon values ('AA131', 'cust4', to_date('2016-08-08', 'YYYY-MM-DD'))")
 cur.execute("insert into flewon values ('SW116', 'cust4', to_date('2016-08-03', 'YYYY-MM-DD'))")
@@ -122,7 +122,7 @@ print('Updating AA to be SW instead for cust4 in ffairlines')
 cur.execute("UPDATE ffairlines set airlineid = 'SW', points = (select coalesce(sum(trunc(extract(epoch from local_arrival_time - local_departing_time)/60)), 0) from flewon natural join flights where customerid = 'cust4' AND airlineid = 'SW') where customerid = 'cust4' and airlineid = 'AA'")
 conn.commit()
 
-printAll('after updating AA to SW as ff airline.  SW should now be the frequentflieron for cust4')
+printAll('After updating AA to SW as ff airline.  SW should now be the frequentflieron for cust4')
 
 cur.execute("INSERT into ffairlines VALUES ('cust4', 'AA', (select coalesce(sum(trunc(extract(epoch from local_arrival_time - local_departing_time)/60)), 0) from flewon natural join flights where customerid = 'cust4' AND airlineid = 'AA'));")
 conn.commit()
@@ -132,12 +132,12 @@ printAll("With AA and SW as ffairlines for cust4,  It should still be SW for fre
 print('Removing SW as cust4 ff airline')
 cur.execute("DELETE from ffairlines where customerid = 'cust4' and airlineid = 'SW'")
 
-printAll('after Removing SW as ff airline it should be AA again for frequentflieron')
+printAll('After Removing SW as ff airline it should be AA again for frequentflieron')
 
 print('Removing AA as cust4 ffairline')
 cur.execute("DELETE from ffairlines where customerid = 'cust4' and airlineid = 'AA'")
 
-printAll('after Removing AA as ffairline.  Now it should be null because cust4 has no entries in fffairlines')
+printAll('After Removing AA as ffairline.  Now it should be null because cust4 has no entries in fffairlines')
 
 print("------------------- CONTINUING WITH OPERATIONS ON FLEWON -------------------")
 
@@ -154,12 +154,12 @@ cur.execute("DELETE from flewon where customerid = 'cust4' and flightid = 'UA138
 
 printAll("Deleted single UA flight and cust 4 has more points in AA")
 
-print("updating an AA flight to be SW instead")
+print("Updating an AA flight to be SW instead")
 cur.execute("UPDATE flewon set flightid = 'SW132' where customerid = 'cust4' and flightid = 'AA131'")
 
-printAll("After update there are more UA flights than AA flights for cust4")
+printAll("After the update there are more points on UA than AA for cust4")
 
 print("Inserting ('UA101', 'cust4', to_date('2016-08-01', 'YYYY-MM-DD') into flewon")
 cur.execute("INSERT into flewon values ('UA101', 'cust4', to_date('2016-08-01', 'YYYY-MM-DD'))")
 
-printAll("After insert UA is still the greatest")
+printAll("After the insert UA is still the greatest")
