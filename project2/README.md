@@ -48,7 +48,7 @@ If you run into any issues while creating, loading or accessing the database, pl
 the given date. Write a query that uses an outer join to list all the flights that did not fly on August 5, 2016. 
 Output Column: `flightid`. Order By: `flightid`.
 
-**Q2 (5pt)**. Write a query to find the percentage participation of United Airlines in each airport, relative to the other airlines.
+**Q2 (5pt)**. Let's revisit query 6 from Project 1. Recall that query 6 asked you to write a query to find the percentage participation of United Airlines in each airport, relative to the other airlines.
 One instance of participation in an airport is defined as a flight (EX. UA101) having a source or dest of that airport.
 If UA101 leaves BOS and arrives in FLL, that adds 1 to United's count for each airport.
 This means that if UA has 1 in BOS, AA has 1 in BOS, DL has 2 in BOS, and SW has 3 in BOS, the query returns:
@@ -61,19 +61,20 @@ Order: Participation in descending order, airport name.
 
 Note: 
 
-1. This is the same query 6 from project 1. **The only difference is you should not use outer join for this query.**
 1. The airport column must be the full name of the airport <br />
 1. The participation percentage is rounded to 2 decimals, as shown above <br />
 1. You do not need to confirm that the flights actually occur by referencing the flewon table. This query is only concerned with flights that exist in the flights table. 
 
-_HINT:_ Use correlated subqueries to identify the number of flights that fly through each airport. As a starting point, you may want to use the following query:
-```
+In project 1, you were allowed to write this query any way that you want. For this project, we want to give you some practice using correlated subqueries, so we are going to write the same query, but this time using correlated queries. In class, we saw an example of using correlated queries in the **WHERE** clause. However, for this query, we're going to use a correlated query in the **SELECT** clause. 
+
+Start with the following query:
 select name, count(*)
-from (select source as airportid from flights union all select dest as airportid from flights) as u
+from (select source as airportid from flights union all select dest as airportid from flights) as airportidunion
 	natural join airports
 group by name;
 ```
-To obtain the result, you only need to modify the select clause along with the group by and order by clause (to format the result set). 
+
+Your query **must** keep the same from clause as the above query. However, you need to modify the select clause to add the correlated subquery to return the accurate results. You will likely find that you have to modifiy the group-by clause as well --- this is fine. You will also need to add the order by clause. 
 
 **Q3 (8pt)**. We will try to write a query using outer joins to find all the customers who satisfy all the following conditions  
   1. are born in or before 1970, and  
