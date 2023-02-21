@@ -66,7 +66,14 @@ Note:
 1. The participation percentage is rounded to 2 decimals, as shown above <br />
 1. You do not need to confirm that the flights actually occur by referencing the flewon table. This query is only concerned with flights that exist in the flights table. 
 
-_HINT:_ Use Scalar subqueries to identify the number of flights that fly through each airport.  
+_HINT:_ Use correlated subqueries to identify the number of flights that fly through each airport. As a starting point, you may want to use the following query:
+```
+select name, count(*)
+from (select source as airportid from flights union all select dest as airportid from flights) as u
+	natural join airports
+group by name;
+```
+To obtain the result, you only need to modify the select clause along with the group by and order by clause (to format the result set). 
 
 **Q3 (8pt)**. We will try to write a query using outer joins to find all the customers who satisfy all the following conditions  
   1. are born in or before 1970, and  
