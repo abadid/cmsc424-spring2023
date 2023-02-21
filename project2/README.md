@@ -27,7 +27,13 @@ Alternately, if you are using your host machine to start the PostgreSQL server, 
 
 If you run into any issues while creating, loading or accessing the database, please seek help from a TA.
 
-### Testing and submitting using SQLTesting.py
+### Submission Instructions
+- Submit your answers to Q1, Q2, and Q3 in `queries.py`
+- Submit your answer to Q4 in `trigger.sql`
+
+</br>
+
+### Q1-3 Testing and submitting using SQLTesting.py
 - Your answers (i.e., SQL queries) should be added to the `queries.py` file similar to Project 1. You are also provided with a Python file `SQLTesting.py` for testing your answers.
 
 - We recommend that you use `psql` to design your queries, and then paste the queries to the `queries.py` file, and confirm it works.
@@ -37,12 +43,6 @@ If you run into any issues while creating, loading or accessing the database, pl
 - If you want to test your answer to Question 1, use: `python SQLTesting.py -q 1`. The program compares the result of running your query against the provided answer (in the `answers.py` file).
 
 - The -v flag will print out more information, including the correct and submitted answers etc.
-
-### Submission Instructions
-- Submit your answers to Q1, Q2, and Q3 in `queries.py`
-- Submit your answer to Q4 in `trigger.sql`
-
-</br>
 
 **Q1 (5pt)**. A flight has flown on a certain day if the `flewon` table contains at least one entry with the same `flightid` on
 the given date. Write a query that uses an outer join to list all the flights that did not fly on August 5, 2016. 
@@ -110,9 +110,11 @@ group by cid
 having count(*) <= 5;
 ```
 
-**Q3.2 (5 pt)**. Modify the above query to produce the correct output. You can only use additional predicates and subqueries; however, you may not use any other tables. Order of the output does not matter.
+**Q3.2 (5 pt)**. Modify the above query to produce the correct output. You can only use additional predicates and subqueries; however, you may not use any other tables. Do not modify the from clause. Order of the output does not matter.
 
-**Q4 (22pt)**.[Trigger]
+</br>
+
+**Q4 (22pt)**.[Triggers]
 
 For this problem you are a database administrator who needs to deal with an issue with the current schema in the flights database.  Today's customers have multiple frequent flier airline memberships. However, the flights schema only allows one frequent flier airline per customer.  To fix the issue, we're going to evolve the database to a new schema.  We decide to delete the frequentflieron column from the `customers` table and instead store customer frequent flier information in a new table: `ffairlines (customerid, airlineid, points)`. By storing this information in a seperate table, if a customer has more than one frequent flier airline, this information can be represented as multiple rows in this new ffairlines table. 
 
@@ -252,7 +254,7 @@ Next let's assume that George plans to take a lot of flights on Delta so he deci
 
 Note: We added DL as George's frequent flier airline because it is his only frequent flier airline.
 
-Lastly let's say  Anthony Allen becomes a South West frequent flier in addition to her American Airlines frequent flier membership.  So we insert (cust12, SW, 723) into `ffairlines`. Our tables look like:
+Lastly let's say  Anthony Allen becomes a South West frequent flier in addition to his American Airlines frequent flier membership.  So we insert (cust0, SW, 723) into `ffairlines`. Our tables look like:
 
 `customers`
 
@@ -283,12 +285,13 @@ Lastly let's say  Anthony Allen becomes a South West frequent flier in addition 
 	 cust0      | SW        |    723
 
 
-Note: We updated Anthony's `frequentflieron` airline.  This may not always happen.  By looking at the `flewon` table (not shown here) we saw that Anthony flew on more SW flights than AA flights so we updated her `frequentflieron`.  If we had found that he had flown on more AA flights than SW flights then there would be no changes in the `customers` table.
+Note: We updated Anthony's `frequentflieron` airline.  This may not always happen.  By looking at the `flewon` table (not shown here) we saw that Anthony had more points on SW than AA so we updated his `frequentflieron`.  If we had found that he had more AA points than SW points then there would be no changes in the `customers` table.
 
 Switch to the `flighttrigger` database (i.e. exit out of the flights database and run `psql flighttrigger`). Execute `\i trigger-database.sql` The trigger code should be submitted in `trigger.sql` file. Running `psql -f trigger.sql flighttrigger` should generate the trigger without errors.
 
-You may also use `trigger-test.py`, in which case you do not need to execute `psql -f trigger.sql flighttrigger` (it is included in the script). You can run the test script as `python trigger-test.py`. A few transactions to the `newcustomers` and `ffairlines` table are also provided. You are free to add more transactions for purposes of testing your trigger code.
-The simplest way to reset the database is to
+You may also use `trigger-test.py`, in which case you do not need to execute `psql -f trigger.sql flighttrigger` (it is included in the script). You can run the test script as `python trigger-test.py`. A few transactions to the `customers`, `newcustomers`, `ffairlines` and `flewon` table are provided. You are free to add more transactions for purposes of testing your trigger code. Please note that this script does not validate your results; instead it prints out the state of the tables. You are responsible for validating the output against the expected state. 
+
+The simplest way to reset the database is to:
 ```
 dropdb flighttrigger
 createdb flighttrigger
@@ -303,6 +306,8 @@ Some useful trigger examples:
 + https://www.postgresql.org/docs/14/plpgsql-trigger.html 
 + https://stackoverflow.com/questions/708562/prevent-recursive-trigger-in-postgresql
 
+**HINT:** You will find that your triggers often end up invoking each other. Use the `pg_trigger_depth()` function to avoid recurssive trigger calls.
+
 
 ### Submission
-Add `queries.py` and `trigger.sql` to a zip file and submit it on gradescope. 
+Add `queries.py` and `trigger.sql` to a zip file and submit it on gradescope. The autograder requires the two files to be in the root folder of the zip file to execute successfully.
