@@ -75,7 +75,7 @@ FROM (SELECT source as airportid FROM flights union all SELECT dest as airportid
 GROUP BY name;
 ```
 
-Your query **must** keep the same FROM clause as the above query. However, you need to modify the SELECT clause to add the correlated subquery to make sure you have United's participation in each airport (the query we gave you only has the total participation of each airport). You will likely find that you have to modifiy the GROUP BY clause as well --- this is fine. You will also need to add the ORDER BY clause. But you should not do anything else besides modify the SELECT and GROUP BY clauses of this query and adding the ORDER BY clause. 
+Your query **must** keep the same FROM clause as the above query. However, you need to modify the SELECT clause to add the correlated subquery to make sure you have United's participation in each airport (the query we gave you only has the total participation of each airport). You will likely find that you have to modifiy the GROUP BY clause as well --- this is fine. You will also need to add the ORDER BY clause. But you should not do anything else besides modifying the SELECT and GROUP BY clauses of this query and adding the ORDER BY clause. 
 
 **Q3 (8pt)**. We will try to write a query using outer joins to find all the customers who satisfy all the following conditions  
   1. are born in or before 1970, and  
