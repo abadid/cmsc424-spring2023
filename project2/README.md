@@ -65,17 +65,17 @@ Note:
 1. The participation percentage is rounded to 2 decimals, as shown above <br />
 1. You do not need to confirm that the flights actually occur by referencing the flewon table. This query is only concerned with flights that exist in the flights table. 
 
-In project 1, you were allowed to write this query any way that you want. For this project, we want to give you some practice using correlated subqueries, so we are going to write the same query, but this time using correlated queries. In class, we saw an example of using correlated queries in the **WHERE** clause. However, for this query, we're going to use a correlated query in the **SELECT** clause. 
+In project 1, you were allowed to write this query any way that you wanted to. For this project, we want to give you some practice using correlated subqueries, so we are going to write the same query, but this time using correlated subqueries. In class, we saw an example of using correlated subqueries in the **WHERE** clause. However, for this query, we're going to use a correlated subquery in the **SELECT** clause. 
 
 Start with the following query:
 ```
-select name, count(*)
-from (select source as airportid from flights union all select dest as airportid from flights) as airportidunion
+SELECT name, count(*)
+FROM (SELECT source as airportid FROM flights union all SELECT dest as airportid FROM flights) as airportidunion
 	natural join airports
-group by name;
+GROUP BY name;
 ```
 
-Your query **must** keep the same from clause as the above query. However, you need to modify the select clause to add the correlated subquery to return the accurate results. You will likely find that you have to modifiy the group-by clause as well --- this is fine. You will also need to add the order by clause. 
+Your query **must** keep the same FROM clause as the above query. However, you need to modify the SELECT clause to add the correlated subquery to make sure you have United's participation in each airport (the query we gave you only has the total participation of each airport). You will likely find that you have to modifiy the GROUP BY clause as well --- this is fine. You will also need to add the ORDER BY clause. But you should not do anything else besides modify the SELECT and GROUP BY clauses of this query and adding the ORDER BY clause. 
 
 **Q3 (8pt)**. We will try to write a query using outer joins to find all the customers who satisfy all the following conditions  
   1. are born in or before 1970, and  
