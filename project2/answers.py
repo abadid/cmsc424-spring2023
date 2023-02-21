@@ -1,0 +1,10 @@
+import datetime
+from decimal import *
+
+correctanswers = ["" for i in range(0, 4)]
+
+correctanswers[1] = [('AA113 ',), ('AA114 ',), ('AA150 ',), ('AA151 ',), ('AA154 ',), ('AA166 ',), ('AA167 ',), ('AA168 ',), ('AA172 ',), ('DL141 ',), ('DL147 ',), ('DL160 ',), ('DL162 ',), ('SW110 ',), ('SW111 ',), ('SW112 ',), ('SW125 ',), ('SW133 ',), ('SW136 ',), ('SW139 ',), ('SW142 ',), ('SW144 ',), ('SW145 ',), ('SW148 ',), ('SW149 ',), ('SW152 ',), ('SW155 ',), ('SW156 ',), ('SW157 ',), ('SW158 ',), ('SW159 ',), ('SW161 ',), ('SW163 ',), ('SW165 ',), ('SW169 ',), ('SW170 ',), ('SW171 ',), ('SW173 ',), ('SW174 ',), ('SW175 ',), ('SW177 ',), ('SW178 ',), ('SW179 ',), ('UA143 ',), ('UA146 ',), ('UA153 ',), ('UA164 ',), ('UA176 ',), ('UA180 ',)]
+
+correctanswers[2] =  [('General Edward Lawrence Logan International                                                         ', Decimal('0.40')), ("Chicago O'Hare International                                                                        ", Decimal('0.33')), ('Fort Lauderdale Hollywood International                                                             ', Decimal('0.33')), ('Los Angeles International                                                                           ', Decimal('0.33')), ('Washington Dulles International                                                                     ', Decimal('0.29')), ('Denver International                                                                                ', Decimal('0.20')), ('Hartsfield Jackson Atlanta International                                                            ', Decimal('0.14')), ('Dallas Fort Worth International                                                                     ', Decimal('0.00')), ('John F Kennedy International                                                                        ', Decimal('0.00')), ('Metropolitan Oakland International                                                                  ', Decimal('0.00'))]
+
+correctanswers[3] = [('cust104   ',), ('cust110   ',), ('cust32    ',), ('cust50    ',), ('cust59    ',)]
