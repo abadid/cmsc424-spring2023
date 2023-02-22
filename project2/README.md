@@ -97,7 +97,7 @@ where source = 'IAD' or dest = 'IAD'
 order by flightid;
 ```
 
-**Q3.1 (3 pt)**. The `customer_flight` view lists all the customers who are born in or before 1970 and the flightid of the flights that the customer has taken. The `flight_IAD` view lists all the flights that fly in or out of IAD.
+*Q3.1 (3 pt)*. The `customer_flight` view lists all the customers who are born in or before 1970 and the flightid of the flights that the customer has taken. The `flight_IAD` view lists all the flights that fly in or out of IAD.
 
 Explain why the following query does not work? Include your explanation as a comment in the `queries.py` file.
 
@@ -110,7 +110,7 @@ group by cid
 having count(*) <= 5;
 ```
 
-**Q3.2 (5 pt)**. Modify the above query to produce the correct output. You can only use additional predicates and subqueries; however, you may not use any other tables. Do not modify the from clause. Order of the output does not matter.
+*Q3.2 (5 pt)*. Modify the above query to produce the correct output. You are allowed to use the `with` clause, but you may not modify the `from` clause nor use any other views and tables other than the provided views. Order of the output does not matter.
 
 </br>
 
