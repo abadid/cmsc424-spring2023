@@ -25,7 +25,7 @@
       <h2>People List</h2>
       <table align="center">
         <match:listpeople query="${query}">
-          <tr><td>${first}</td><td>${last}</td></tr>
+          <tr><td>${first}</td><td>${last}</td><td>${bdate}</td></tr>
         </match:listpeople>
       </table>
     </div>

@@ -41,6 +41,13 @@ public class Person {
 		this.lastName = lastName;
 	}
 
+	//constructor for person if only need to display the name and birthdate
+	public Person(String firstName, String lastName, String birthdate) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.birthdate = birthdate;
+	}
+
 	//constructor for person with all inital fields
 	public Person(String firstName, String lastName, String birthdate, String bloodtype) {
 		this.firstName = firstName;
@@ -71,26 +78,27 @@ public class Person {
 		return lastName;
 	}
 
+	public String getBirthdate() {
+		return birthdate;
+	}
+
 /*
 	Return an array of all the people in the person table
 	You will need to make a SQL call via JDBC to the database to get all of the people
-	Since the webpage only needs to display the person's first and last name, only those fields
-	of the Person object need to be instantiated (i.e., you can use the second of the three Person constructors above)
+	Since the webpage only needs to display the person's first name, last namem and birthdate , only those fields
+	of the Person object need to be instantiated.
 	Order does not matter.
 */
-	public static Person[] getPeople() {
+public static Person[] getPeople() {
+	con = getConnection();
 
-		con = getConnection();
-
-		if (con == null) {
-			logger.warn("Connection Failed!");
-			Person failed = new Person("Connection", "Failed");
-			return new Person[] { failed };
-		}
-
-		return new Person[]{};
-
+	if (con == null) {
+		logger.warn("Connection Failed!");
+		Person failed = new Person("Connection", "Failed", "");
+		return new Person[] { failed };
 	}
+	return new Person[]{};
+}
 
 	/* For every person record in the database, search each of its character fields to see if input query is a substring of any of them
 	Return everything that matches with every char/varchar column. This should be case senstive in finding substring matches
@@ -117,7 +125,7 @@ public class Person {
 
 		if (con == null) {
 			logger.warn("Connection Failed!");
-			Person failed = new Person("Connection", "Failed");
+			Person failed = new Person("Connection", "Failed", "");
 			return new Person[] { failed };
 		}
 
@@ -139,10 +147,10 @@ public class Person {
 
 		if (con == null) {
 			logger.warn("Connection Failed!");
-			Person failed = new Person("Connection", "Failed");
+			Person failed = new Person("Connection", "Failed", "");
 			return failed;
 		}
-		return new Person("No", "Matches");
+		return new Person("No", "Matches", "");
 	}
 
 	/*Add a person to the database with all of the fields specified.
@@ -181,14 +189,14 @@ public class Person {
 	public static Person[] getOrganMatches(String id) {
 
 		con = getConnection();
-		// If that fails, send dummy entries
+		// If that fails, send dummy entries.
 		if (con == null) {
 			logger.warn("Connection Failed!");
-			Person failed = new Person("Connection", "Failed");
+			Person failed = new Person("Connection", "Failed", "");
 			return new Person[] { failed };
 		}
 
-		return new Person[] {};
+		return new Person[]{};
 	}
 
 	/*
@@ -317,22 +325,6 @@ public class Person {
 		return -1;
 	}
 
-	/*
-	Get the name of a patient's doctor, given the patient's id.
-
-	You must use a prepared statement.
-	*/
-	public static String getDoctorName(int pid){
-		con = getConnection();
-
-		if (con == null) {
-			logger.warn("Connection Failed!");
-			return "No connection";
-		}
-
-		return "NOT IMPLEMENTED";
-	}
-
 	private static Connection getConnection() {
 		// Return existing connection after first call
 		if (con != null) {
@@ -357,7 +349,7 @@ public class Person {
 			Class.forName("org.postgresql.Driver");
 			logger.info("Getting local connection");
 			Connection con = DriverManager.getConnection(
-			"jdbc:postgresql://localhost/matchapp",
+			"jdbc:postgresql://localhost:5432/matchapp",
 			"matchmaker",
 			"kingofthenorth");
 			logger.info("Local connection successful.");

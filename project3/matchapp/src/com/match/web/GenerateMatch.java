@@ -8,6 +8,7 @@ import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.*;
 
+//No code to add here
 public class GenerateMatch extends SimpleTagSupport {
   Person[] people = null;
   private String id;

@@ -7,6 +7,7 @@ import javax.servlet.jsp.*;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.*;
 
+//No code to add here
 public class ListPeople extends SimpleTagSupport {
   Person[] people = null;
   String query = "";
@@ -33,6 +34,7 @@ public class ListPeople extends SimpleTagSupport {
     for (int i = 0; i < length; i++) {
       getJspContext().setAttribute("first", people[i].getFirstName());
       getJspContext().setAttribute("last", people[i].getLastName());
+      getJspContext().setAttribute("bdate", people[i].getBirthdate());
       getJspBody().invoke(null);
     }
   }
