@@ -48,7 +48,7 @@
 
   <servlet>
     <servlet-name>AddPost</servlet-name>
-    <servlet-class>com.match.web.AddPerson</servlet-class>
+    <servlet-class>com.match.web.AddStudent</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>AddPost</servlet-name>
@@ -75,7 +75,7 @@
 
   <servlet>
     <servlet-name>Search</servlet-name>
-    <servlet-class>com.match.web.SearchPeople</servlet-class>
+    <servlet-class>com.match.web.SearchStudents</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Search</servlet-name>
@@ -83,12 +83,12 @@
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>PeopleServlet</servlet-name>
-    <jsp-file>/people.jsp</jsp-file>
+    <servlet-name>StudentsServlet</servlet-name>
+    <jsp-file>/students.jsp</jsp-file>
   </servlet>
   <servlet-mapping>
-    <servlet-name>PeopleServlet</servlet-name>
-    <url-pattern>/people</url-pattern>
+    <servlet-name>StudentsServlet</servlet-name>
+    <url-pattern>/students</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -116,6 +116,24 @@
   <servlet-mapping>
     <servlet-name>GenerateServlet</servlet-name>
     <url-pattern>/generate</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>GetAdvisorServlet</servlet-name>
+    <servlet-class>com.match.web.GetAdvisorServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetAdvisorServlet</servlet-name>
+    <url-pattern>/getadvisor</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AdvisorServlet</servlet-name>
+    <jsp-file>/advisor.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AdvisorServlet</servlet-name>
+    <url-pattern>/advisor</url-pattern>
   </servlet-mapping>
 
   <servlet>

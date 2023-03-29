@@ -44,7 +44,7 @@ RUN curl -O -L https://github.com/AKSarav/SampleWebApp/raw/master/dist/SampleWeb
 EXPOSE 8080
 
 COPY ./matchapp /home/project3/matchapp
-ADD organs.sql /home/project3/
+ADD students.sql /home/project3/
 WORKDIR /home/project3/matchapp
 RUN chmod +x build.sh
 

@@ -1,5 +1,5 @@
 package com.match.web;
-import com.match.model.Person;
+import com.match.model.Student;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javax.servlet.*;
@@ -10,7 +10,7 @@ import java.io.*;
 
 //No code to add here
 public class GenerateMatch extends SimpleTagSupport {
-  Person[] people = null;
+  Student[] students = null;
   private String id;
   private static final Logger logger = LogManager.getLogger("match");
 
@@ -22,11 +22,12 @@ public class GenerateMatch extends SimpleTagSupport {
   public void doTag() throws JspException, IOException {
     //You write Person.getMatchedPeople in Person class
     if (!id.equals("")) {
-      people = Person.getOrganMatches(id);
+      students = Student.getMentorMatches(id);
 
-      for (int i = 0; i < people.length; i++) {
-        getJspContext().setAttribute("first", people[i].getFirstName());
-        getJspContext().setAttribute("last", people[i].getLastName());
+      for (int i = 0; i < students.length; i++) {
+        getJspContext().setAttribute("first", students[i].getFirstName());
+        getJspContext().setAttribute("last", students[i].getLastName());
+        getJspContext().setAttribute("email", students[i].getEmail());
         getJspBody().invoke(null);
       }
     }

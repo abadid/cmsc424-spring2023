@@ -1,4 +1,5 @@
-package com.match.web; 
+package com.match.web;
+import com.match.model.Person;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -9,11 +10,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 //No code to add here
-public class SearchPeople extends HttpServlet {
+public class GetAdvisorServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NumberFormatException {
-    String query= request.getParameter("query");
-    request.setAttribute("query", query);
-    RequestDispatcher view = request.getRequestDispatcher("people.jsp");
+    String id = request.getParameter("id");
+    request.setAttribute("id", id);
+    RequestDispatcher view = request.getRequestDispatcher("advisor.jsp");
     view.forward(request,response);
   }
 }

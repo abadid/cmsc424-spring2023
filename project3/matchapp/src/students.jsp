@@ -10,23 +10,23 @@
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="css/match.css" rel="stylesheet" />
 
-    <title>People List</title>
+    <title>Student List</title>
   </head>
   <body>
     <tagfiles:header />
     
     <div class="container heading">
       <form action="search" method="get">
-        Search for Person: 
+        Search for Students: 
         <input type="text" name="query" />
         <input type="submit" value="Submit" />
       </form>
 
-      <h2>People List</h2>
+      <h2>Student List</h2>
       <table align="center">
-        <match:listpeople query="${query}">
-          <tr><td>${first}</td><td>${last}</td><td>${bdate}</td></tr>
-        </match:listpeople>
+        <match:liststudents query="${query}">
+          <tr><td>${first}</td><td>${last}</td><td>${email}</td></tr>
+        </match:liststudents>
       </table>
     </div>
 

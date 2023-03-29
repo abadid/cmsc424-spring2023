@@ -15,9 +15,6 @@
     <tagfiles:header />
     <table border="0">
       <tr>
-        <td align=center>
-          <img src="images/snake.png">
-        </td>
         <td>
           <h1>404 Page not Found!</h1>
         </td>

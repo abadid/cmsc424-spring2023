@@ -1,6 +1,6 @@
 package com.match.web;
-import com.match.model.Person;
-import com.match.model.Organ;
+import com.match.model.Student;
+import com.match.model.Field;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -19,32 +19,23 @@ public class AddRequest extends HttpServlet {
 
     //Gets the string data of all of the fields in the form to register
     String id = request.getParameter("id");
-    String organ = request.getParameter("organ");
-    String by = request.getParameter("by");
+    String field = request.getParameter("field");
 
     /*
-    TODO: Call the addNeededOrgan and getDoctorUpdate methods given the parameters passed
-    to the post request. Only call getDoctorUpdate if the first function is successful.
-    Then, send the status and new doctor as URL parameters in the redirect.
-    Ensure that the 'by' parameter (short for 'needs by') is a day greater than the current day.
+    TODO: Call the addMentorNeeded and getAdvisorUpdate methods given the parameters passed
+    to the post request. Only call getAdvisorUpdate if the first function is successful.
+    Then, send the status and new advisor as URL parameters in the redirect.
     */
 
-    // Replace 'true' below and check for input constraints
-    if (true) {
-      response.sendRedirect("invalidinput");
-    }
-    else {
-        //Here we make the call to the method in Person that connects to the database and inserts the person with the given values
 
-        // status should be the code returned from addNeededOrgan and doc should be the doctor's id returned from getDoctorUpate.
-        // There is no need to update doc if addNeededOrgan fails.
+      // status should be the code returned from addMentorNeeded and advisor should be the advisor's id returned from getAdvisorUpdate.
+      // There is no need to update advisor if addMentorNeeded fails.
 
-        int status = -1;
-        int doc = -1;
-        //Sends the response to the add page so that another person can be added. ID is passed as a parameter to display the id
-        //for the new user to refer to get and view matches
-        response.sendRedirect("request?status=" + status + "&doc=" + doc);
-    }
+      int status = -1;
+      int advisor = -1;
+
+      response.sendRedirect("request?status=" + status + "&advisor=" + advisor);
+  
 
 
   }

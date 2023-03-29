@@ -10,7 +10,7 @@
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="css/match.css" rel="stylesheet" />
 
-    <title>Register to find your match!</title>
+    <title>Register to find your mentor!</title>
   </head>
 
   <body>
@@ -27,20 +27,17 @@
             Last Name: <br />
             <input type="text" size="18" name="last" required/>
             <br />
-            Birthdate: <br />
-            <input type="date" size="18" name="birthdate" />
+            Email: <br />
+            <input type="text" size="18" name="email" />
             <br/>
 
-            Blood type: <br />
+            Student type: <br />
             <select name="type">
-              <option value="O+">O+</option>
-              <option value="O-">O-</option>
-              <option value="A+">A+</option>
-              <option value="A-">A-</option>
-              <option value="B+">B+</option>
-              <option value="B-">B-</option>
-              <option value="AB+">AB+</option>
-              <option value="AB-">AB-</option>
+              <option value="Freshman">Freshman</option>
+              <option value="Sophomore">Sophomore</option>
+              <option value="Junior">Junior</option>
+              <option value="Senior">Senior</option>
+              <option value="Graduate Student">Graduate Student</option>
             </select>
             <br/>
 
@@ -55,27 +52,27 @@
     <div>
       <%
         String id =  request.getParameter("id");
-        String doc = request.getParameter("doc");
+        String advisor = request.getParameter("advisor");
         if(id == null) {
           id = "";
         }
         else {
           id = "Your ID is " + id + " - Remember it!";
         }
-        if(doc == null){
-            doc = "";
+        if(advisor == null){
+            advisor = "";
         }
         else{
-            doc = "Your doctor's id is " + doc;
+            advisor = "Your advisor's id is " + advisor;
         }
       %>
-      <p><%= id %> <br> <%= doc %></p>
+      <p><%= id %> <br> <%= advisor %></p>
 
 
     </div>
 
     <div class="sample">
-      <p>You will be assigned a certified Organ Trail doctor following your organ request/offer. </p>
+      <p>You will be assigned a certified Research Trail advisor following your mentor request/offer. </p>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

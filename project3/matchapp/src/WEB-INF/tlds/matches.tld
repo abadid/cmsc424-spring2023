@@ -4,7 +4,7 @@
    <tlib-version>1.2</tlib-version>
     <uri>match-functions</uri>
     <tag>
-      <description>Generate a list of People</description>
+      <description>Generate a list of matches</description>
       <name>generatematch</name>
       <tag-class>com.match.web.GenerateMatch</tag-class>
       <body-content>scriptless</body-content>
@@ -16,9 +16,9 @@
     </tag>
 
   <tag>
-    <description>Generate a list of People</description>
-    <name>listpeople</name>
-    <tag-class>com.match.web.ListPeople</tag-class>
+    <description>Generate a list of students</description>
+    <name>liststudents</name>
+    <tag-class>com.match.web.ListStudents</tag-class>
     <body-content>scriptless</body-content>
     <attribute>
       <name>query</name>
@@ -26,6 +26,18 @@
       <rtexprvalue>true</rtexprvalue>
     </attribute>
   </tag>
+
+     <tag>
+      <description>Show the advisor</description>
+      <name>listadvisor</name>
+      <tag-class>com.match.web.GetAdvisor</tag-class>
+      <body-content>scriptless</body-content>
+      <attribute>
+        <name>id</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+      </attribute>
+    </tag>
 
   <tag>
     <description>Show list of matches</description>

@@ -17,23 +17,20 @@
     <tagfiles:header />
 
     <div class="container heading">
-      <h2>Request an Organ!</h2>
+      <h2>Request a Mentor!</h2>
       <form action="request.do" method="post">
         <div class = "row">
-            User ID: <br />
+            Student ID: <br />
             <input type="number" size="18" name="id" required  />
             <br />
-            Organ: <br />
-            <select name="organ">
-              <option value="Heart">Heart</option>
-              <option value="Liver">Liver</option>
-              <option value="Kidney">Kidney</option>
-              <option value="Lung">Lung</option>
-              <option value="Pancreas">Pancreas</option>
+            Field: <br />
+            <select name="field">
+              <option value="Theory">Theory</option>
+              <option value="Artificial Intelligence">Artificial Intelligence</option>
+              <option value="Networks">Networks</option>
+              <option value="Databases">Databases</option>
+              <option value="Security">Security</option>
             </select>
-            <br />
-            Needs by: <br />
-            <input type="date" size="18" name="by" />
             <br />
             <!-- ADD YOUR INPUT FIELD FOR THE FIELD YOU ADDED TO THE PERSON DATABASE RIGHT HERE-->
 
@@ -49,7 +46,7 @@
     <div>
       <%
         String status =  request.getParameter("status");
-        String doc = request.getParameter("doc");
+        String advisor = request.getParameter("advisor");
         String message = null;
         if(status == null) {
           message = "";
@@ -64,14 +61,14 @@
             message = "Request status unknown";
         }
 
-        if(doc == null || doc.compareTo("-1") == 0){
-            doc = "";
+        if(advisor == null || advisor.compareTo("-1") == 0){
+          advisor = "";
         }
         else{
-            doc = "Your doctor's id is " + doc;
+          advisor = "Your advisor's id is " + advisor;
         }
       %>
-      <p><%= message %> <br> <%= doc %></p>
+      <p><%= message %> <br> <%= advisor %></p>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

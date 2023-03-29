@@ -10,7 +10,7 @@
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="css/match.css" rel="stylesheet" />
 
-    <title>People List</title>
+    <title>Student List</title>
   </head>
   <body>
     <tagfiles:header />
@@ -27,7 +27,7 @@
         </form>
         <table align="center">
           <match:generatematch id = "${id}">
-            <tr><td>${first}</td><td>${last}</td></tr>
+            <tr><td>${first}</td><td>${last}</td><td>${email}</td></tr>
           </match:generatematch>
         </table>
     </div>
