@@ -8,19 +8,22 @@ This project was adapted from a B+ tree implementation project originally develo
 
 ## **Environment**
 
-We will not be using the Docker container that we've been using for the other projects thus far this semester, since this is a pure Java project.  We highly recommend you install/use an IDE like [Eclipse](https://www.eclipse.org/downloads/) for this project.  We will be using Maven to run the tests.  If you can import the code as a Maven project in your IDE and run your unit tests successfully, you do not need to install Maven on your local computer. Most IDEs should provide this functionality by default. For example, in Eclipse, you can do this: File > import > maven > existing maven project.
+For this project, we highly recommend you install/use an IDE like [Eclipse](https://www.eclipse.org/downloads/). In Eclipse, import this project with: File > import > maven > existing maven project.
 
-Or if you don't want to use an IDE, you can also install JDK (8 or later) and compile through command lines:
+Alternatively, you can run the project within a Docker environment, which can be started with the following command. Make sure that the current directory is the directory of the project:
 
 ```bash
-    cd project4
-    # build code without testing
-    ./mvnw compile
-    # build code and run unit tests
-    ./mvnw test
+docker run -v $PWD:/project3 -ti --rm -w /project3 maven:3.9.0-eclipse-temurin-17-alpine /bin/bash
 ```
 
-If you already installed Maven, you can replace the Maven wrapper `./mvnw` with `mvn` in the above commands.
+In the terminal of the Docker container, you can compile and run the tests with the following commands:
+
+```bash
+    # build code without testing
+    mvn compile
+    # build code and run unit tests
+    mvn test
+```
 
 ## **The Project Files**
 
