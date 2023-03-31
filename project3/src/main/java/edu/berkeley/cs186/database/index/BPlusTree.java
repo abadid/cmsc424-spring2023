@@ -22,28 +22,34 @@ import edu.berkeley.cs186.database.table.RecordId;
  * // Create an order 2, integer-valued B+ tree that is persisted in tree.txt.
  * BPlusTree tree = new BPlusTree("tree.txt", Type.intType(), 2, transaction);
  *
- * // Insert some values into the tree. tree.put(new IntDataBox(0), new
- * RecordId(0, (short) 0)); tree.put(new IntDataBox(1), new RecordId(1, (short)
- * 1)); tree.put(new IntDataBox(2), new RecordId(2, (short) 2));
+ * // Insert some values into the tree.
+ * tree.put(new IntDataBox(0), new RecordId(0, (short) 0));
+ * tree.put(new IntDataBox(1), new RecordId(1, (short) 1));
+ * tree.put(new IntDataBox(2), new RecordId(2, (short) 2));
  *
- * // Get some values out of the tree. tree.get(new IntDataBox(0)); //
- * Optional.of(RecordId(0, 0)) tree.get(new IntDataBox(1)); //
- * Optional.of(RecordId(1, 1)) tree.get(new IntDataBox(2)); //
- * Optional.of(RecordId(2, 2)) tree.get(new IntDataBox(3)); // Optional.empty();
+ * // Get some values out of the tree.
+ * tree.get(new IntDataBox(0)); // Optional.of(RecordId(0, 0))
+ * tree.get(new IntDataBox(1)); // Optional.of(RecordId(1, 1))
+ * tree.get(new IntDataBox(2)); // Optional.of(RecordId(2, 2))
+ * tree.get(new IntDataBox(3)); // Optional.empty();
  *
- * // Iterate over the record ids in the tree. tree.scanEqual(new
- * IntDataBox(2)); // [(2, 2)] tree.scanAll(); // [(0, 0), (1, 1), (2, 2)]
+ * // Iterate over the record ids in the tree.
+ * tree.scanEqual(new IntDataBox(2)); // [(2, 2)]
+ * tree.scanAll(); // [(0, 0), (1, 1), (2, 2)]
  * tree.scanGreaterEqual(new IntDataBox(1)); // [(1, 1), (2, 2)]
  *
- * // Remove some elements from the tree. tree.get(new IntDataBox(0)); //
- * Optional.of(RecordId(0, 0)) tree.remove(new IntDataBox(0)); tree.get(new
- * IntDataBox(0)); // Optional.empty()
+ * // Remove some elements from the tree.
+ * tree.get(new IntDataBox(0)); // Optional.of(RecordId(0, 0))
+ * tree.remove(new IntDataBox(0));
+ * tree.get(new IntDataBox(0)); // Optional.empty()
  *
- * // Load the tree from disk. BPlusTree fromDisk = new BPlusTree("tree.txt");
+ * // Load the tree from disk.
+ * BPlusTree fromDisk = new BPlusTree("tree.txt");
  *
- * // All the values are still there. fromDisk.get(new IntDataBox(0)); //
- * Optional.empty() fromDisk.get(new IntDataBox(1)); // Optional.of(RecordId(1,
- * 1)) fromDisk.get(new IntDataBox(2)); // Optional.of(RecordId(2, 2))
+ * // All the values are still there.
+ * fromDisk.get(new IntDataBox(0)); // Optional.empty()
+ * fromDisk.get(new IntDataBox(1)); // Optional.of(RecordId(1, 1))
+ * fromDisk.get(new IntDataBox(2)); // Optional.of(RecordId(2, 2))
  */
 public class BPlusTree implements Closeable {
 	public static final String FILENAME_PREFIX = "db";
@@ -143,13 +149,15 @@ public class BPlusTree implements Closeable {
 	/**
 	 * Returns the value associated with `key`.
 	 *
-	 * // Create a B+ tree and insert a single value into it. BPlusTree tree = new
-	 * BPlusTree("t.txt", Type.intType(), 4); DataBox key = new IntDataBox(42);
-	 * RecordId rid = new RecordId(0, (short) 0); tree.put(key, rid);
+	 * // Create a B+ tree and insert a single value into it.
+	 * BPlusTree tree = new BPlusTree("t.txt", Type.intType(), 4);
+	 * DataBox key = new IntDataBox(42);
+	 * RecordId rid = new RecordId(0, (short) 0);
+	 * tree.put(key, rid);
 	 *
 	 * // Get the value we put and also try to get a value we never put.
-	 * tree.get(key); // Optional.of(rid) tree.get(new IntDataBox(100)); //
-	 * Optional.empty()
+	 * tree.get(key); // Optional.of(rid)
+	 * tree.get(new IntDataBox(100)); // Optional.empty()
 	 */
 	public Optional<RecordId> get(BaseTransaction transaction, DataBox key) {
 		throw new UnsupportedOperationException("Implement this.");
@@ -177,17 +185,21 @@ public class BPlusTree implements Closeable {
 	 * Returns an iterator over all the RecordIds stored in the B+ tree in ascending
 	 * order of their corresponding keys.
 	 *
-	 * // Create a B+ tree and insert some values into it. BPlusTree tree = new
-	 * BPlusTree("t.txt", Type.intType(), 4); tree.put(new IntDataBox(2), new
-	 * RecordId(2, (short) 2)); tree.put(new IntDataBox(5), new RecordId(5, (short)
-	 * 5)); tree.put(new IntDataBox(4), new RecordId(4, (short) 4)); tree.put(new
-	 * IntDataBox(1), new RecordId(1, (short) 1)); tree.put(new IntDataBox(3), new
-	 * RecordId(3, (short) 3));
+	 * // Create a B+ tree and insert some values into it.
+	 * BPlusTree tree = new BPlusTree("t.txt", Type.intType(), 4);
+	 * tree.put(new IntDataBox(2), new RecordId(2, (short) 2));
+	 * tree.put(new IntDataBox(5), new RecordId(5, (short) 5));
+	 * tree.put(new IntDataBox(4), new RecordId(4, (short) 4));
+	 * tree.put(new IntDataBox(1), new RecordId(1, (short) 1));
+	 * tree.put(new IntDataBox(3), new RecordId(3, (short) 3));
 	 *
-	 * Iterator<RecordId> iter = tree.scanAll(); iter.next(); // RecordId(1, 1)
-	 * iter.next(); // RecordId(2, 2) iter.next(); // RecordId(3, 3) iter.next(); //
-	 * RecordId(4, 4) iter.next(); // RecordId(5, 5) iter.next(); //
-	 * NoSuchElementException
+	 * Iterator<RecordId> iter = tree.scanAll();
+	 * iter.next(); // RecordId(1, 1)
+	 * iter.next(); // RecordId(2, 2)
+	 * iter.next(); // RecordId(3, 3)
+	 * iter.next(); // RecordId(4, 4)
+	 * iter.next(); // RecordId(5, 5)
+	 * iter.next(); // NoSuchElementException
 	 *
 	 * Note that you CAN NOT materialize all record ids in memory and then return an
 	 * iterator over them. Your iterator must lazily scan over the leaves of the B+
@@ -203,16 +215,19 @@ public class BPlusTree implements Closeable {
 	 * greater than or equal to `key`. RecordIds are returned in ascending of their
 	 * corresponding keys.
 	 *
-	 * // Create a B+ tree and insert some values into it. BPlusTree tree = new
-	 * BPlusTree("t.txt", Type.intType(), 4); tree.put(new IntDataBox(2), new
-	 * RecordId(2, (short) 2)); tree.put(new IntDataBox(5), new RecordId(5, (short)
-	 * 5)); tree.put(new IntDataBox(4), new RecordId(4, (short) 4)); tree.put(new
-	 * IntDataBox(1), new RecordId(1, (short) 1)); tree.put(new IntDataBox(3), new
-	 * RecordId(3, (short) 3));
+	 * // Create a B+ tree and insert some values into it.
+	 * BPlusTree tree = new BPlusTree("t.txt", Type.intType(), 4);
+	 * tree.put(new IntDataBox(2), new RecordId(2, (short) 2));
+	 * tree.put(new IntDataBox(5), new RecordId(5, (short) 5));
+	 * tree.put(new IntDataBox(4), new RecordId(4, (short) 4));
+	 * tree.put(new IntDataBox(1), new RecordId(1, (short) 1));
+	 * tree.put(new IntDataBox(3), new RecordId(3, (short) 3));
 	 *
 	 * Iterator<RecordId> iter = tree.scanGreaterEqual(new IntDataBox(3));
-	 * iter.next(); // RecordId(3, 3) iter.next(); // RecordId(4, 4) iter.next(); //
-	 * RecordId(5, 5) iter.next(); // NoSuchElementException
+	 * iter.next(); // RecordId(3, 3)
+	 * iter.next(); // RecordId(4, 4)
+	 * iter.next(); // RecordId(5, 5)
+	 * iter.next(); // NoSuchElementException
 	 *
 	 * Note that you CAN NOT materialize all record ids in memory and then return an
 	 * iterator over them. Your iterator must lazily scan over the leaves of the B+
@@ -228,9 +243,11 @@ public class BPlusTree implements Closeable {
 	 * Inserts a (key, rid) pair into a B+ tree. If the key already exists in the B+
 	 * tree, then the pair is not inserted and an exception is raised.
 	 *
-	 * BPlusTree tree = new BPlusTree("t.txt", Type.intType(), 4); DataBox key = new
-	 * IntDataBox(42); RecordId rid = new RecordId(42, (short) 42); tree.put(key,
-	 * rid); // Sucess :) tree.put(key, rid); // BPlusTreeException :(
+	 * BPlusTree tree = new BPlusTree("t.txt", Type.intType(), 4);
+	 * DataBox key = new IntDataBox(42);
+	 * RecordId rid = new RecordId(42, (short) 42);
+	 * tree.put(key, rid); // Sucess :)
+	 * tree.put(key, rid); // BPlusTreeException :(
 	 */
 	public void put(BaseTransaction transaction, DataBox key, RecordId rid) throws BPlusTreeException {
 		throw new UnsupportedOperationException("Implement this.");
@@ -259,10 +276,13 @@ public class BPlusTree implements Closeable {
 	/**
 	 * Deletes a (key, rid) pair from a B+ tree.
 	 *
-	 * BPlusTree tree = new BPlusTree("t.txt", Type.intType(), 4); DataBox key = new
-	 * IntDataBox(42); RecordId rid = new RecordId(42, (short) 42);
+	 * BPlusTree tree = new BPlusTree("t.txt", Type.intType(), 4);
+	 * DataBox key = new IntDataBox(42);
+	 * RecordId rid = new RecordId(42, (short) 42);
 	 *
-	 * tree.put(key, rid); tree.get(key); // Optional.of(rid) tree.remove(key);
+	 * tree.put(key, rid);
+	 * tree.get(key); // Optional.of(rid)
+	 * tree.remove(key);
 	 * tree.get(key); // Optional.empty()
 	 */
 	public void remove(BaseTransaction transaction, DataBox key) {
