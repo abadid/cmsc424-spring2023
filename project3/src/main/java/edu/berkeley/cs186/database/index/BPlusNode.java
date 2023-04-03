@@ -54,7 +54,7 @@ abstract class BPlusNode {
 
     /**
      * node.getRightmostLeaf() returns the rightmost leaf in the subtree rooted by this node.
-     * In the example above, inner.getRightmostLeaf() would return leaf0, and
+     * In the example above, inner.getRightmostLeaf() would return leaf2, and
      * leaf1.getRightmostLeaf() would return leaf1.
      */
     public abstract LeafNode getRightmostLeaf(BaseTransaction transaction);
