@@ -88,7 +88,7 @@ public class TestLeafNode {
     public void testGetRightmostLeaf() throws IOException {
         BPlusTreeMetadata meta = getBPlusTreeMetadata(Type.intType(), 5);
         LeafNode leaf = getEmptyLeaf(meta, Optional.empty());
-        assertEquals(leaf, leaf.getLeftmostLeaf(null));
+        assertEquals(leaf, leaf.getRightmostLeaf(null));
     }
 
     @Test
