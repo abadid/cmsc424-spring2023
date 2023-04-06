@@ -116,7 +116,7 @@ There are a few other files that are used to make the tests work that you are we
     - Our implementation of B+ trees assumes that inner nodes and leaf nodes can be serialized on a single page. You do not have to support nodes that span multiple pages.
     - Our implementation of delete does not rebalance the tree. Thus, the rule that all non-root leaf nodes in a B+ tree of order `d` contain between `d` and `2d` entries will not hold for this project. Note that actual B+ trees **do rebalance** after deletion, but we will **not** be implementing rebalancing trees in this project for the sake of simplicity.  This means you also do not need to account for cases where inner nodes may be deleted.  
 2. Implement the `LeafNode::fromBytes` function that reads a `LeafNode` from a page. For information on how a leaf node is serialized, see `LeafNode::toBytes`. For an example on how to read a node from disk, see `InnerNode::fromBytes`.
-3. Implement the `get`, `getLeftmostLeaf`, `getRightmostLeaf`, `put`, `remove`, and `bulkLoad` methods of `InnerNode` and `LeafNode`. For information on what these methods do, refer to the comments in `BPlusNode`. Don't forget to call `sync` when implementing `put`, `remove`, and `bulkLoad`.
+3. Implement the `get`, `getLeftmostLeaf`, `getRightmostLeaf`, `put`, `remove`, and `bulkLoad` methods of `LeafNode` and `InnerNode`. For information on what these methods do, refer to the comments in `BPlusNode`. Don't forget to call `sync` when implementing `put`, `remove`, and `bulkLoad`.
 4. Implement the `get`, `put`, `remove`, and `bulkLoad` methods of `BPlusTree`. 
 
 ## **Things to Note**
