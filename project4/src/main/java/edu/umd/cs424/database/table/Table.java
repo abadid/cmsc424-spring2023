@@ -230,9 +230,6 @@ public class Table implements Closeable {
         return allocator.getNumPages() - 1;
     }
 
-    // TODO(mwhittaker): This should not be public. Right now, other code
-    // elsewhere reads the bitmap of tables, so we're forced to make it public.
-    // We should refactor to avoid this.
     public byte[] getBitMap(BaseTransaction transaction, Page page) {
         byte[] bytes = new byte[bitmapSizeInBytes];
         page.getBuffer(transaction).get(bytes);
@@ -477,8 +474,8 @@ public class Table implements Closeable {
     }
 
     public BacktrackingIterator<Record> blockIterator(BaseTransaction transaction, Iterator<Page> block,
-            int maxRecords) {
-        return new RecordIterator(transaction, this, new RIDBlockIterator(transaction, block, maxRecords));
+            int maxPages) {
+        return new RecordIterator(transaction, this, new RIDBlockIterator(transaction, block, maxPages));
     }
 
     /**
@@ -574,18 +571,22 @@ public class Table implements Closeable {
     public class RIDBlockIterator implements BacktrackingIterator<RecordId> {
         private BacktrackingIterator<Page> pageIter;
 
-        private RecordId nextRecordId = null;
-        private BacktrackingIterator<RecordId> recordIter = null;
-        private BacktrackingIterator<RecordId> prevRecordIter = null;
-        private BacktrackingIterator<RecordId> markedPrevRecordIter = null;
+        private BacktrackingIterator<RecordId> recordIdIter = null;
+        private BacktrackingIterator<RecordId> prevRecordIdIter = null;
+        private BacktrackingIterator<RecordId> markedPrevRecordIdIter = null;
+
+        boolean pageUsed = false;
+        boolean savedPageUsed = false;
 
         // You do not need to manipulate this, just pass it into any method that
         // requires a transaction.
         private BaseTransaction transaction;
 
         RIDBlockIterator(BaseTransaction transaction, BacktrackingIterator<Page> pageIter) {
-            throw new UnsupportedOperationException("Implement this.");
+            // throw new UnsupportedOperationException("Implement this.");
             //if you want to add anything to this constructor, feel free to
+            this.transaction = transaction;
+            this.pageIter = pageIter;
         }
 
         /**
@@ -622,11 +623,24 @@ public class Table implements Closeable {
         }
 
         public boolean hasNext() {
-            throw new UnsupportedOperationException("Implement this.");
+             if (this.recordIdIter != null && this.recordIdIter.hasNext()) {
+                return true;
+            } else if (this.pageIter.hasNext()) {
+                this.recordIdIter = new RIDPageIterator(transaction, this.pageIter.next());
+                this.pageUsed = false;
+                return hasNext();
+            }
+            return false;
         }
 
         public RecordId next() {
-            throw new UnsupportedOperationException("Implement this.");
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+
+            this.prevRecordIdIter = this.recordIdIter;
+            this.pageUsed = true;
+            return this.recordIdIter.next();
         }
 
         /**
@@ -636,12 +650,13 @@ public class Table implements Closeable {
          * iterator of RecordIds.
          */
         public void mark() {
-            if (this.prevRecordIter == null) {
+            if (this.prevRecordIdIter == null) {
                 return;
             }
             this.pageIter.mark();
-            this.prevRecordIter.mark();
-            this.markedPrevRecordIter = this.prevRecordIter;
+            this.prevRecordIdIter.mark();
+            this.markedPrevRecordIdIter = this.prevRecordIdIter;
+            this.savedPageUsed = this.pageUsed;
         }
 
         /**
@@ -652,14 +667,16 @@ public class Table implements Closeable {
          * care is taken to ensure that we properly reset the block page iterator.
          */
         public void reset() {
-            if (this.markedPrevRecordIter == null) {
+            if (this.markedPrevRecordIdIter == null) {
                 return;
             }
             this.pageIter.reset();
-            this.pageIter.next();
-            this.prevRecordIter = null;
-            this.recordIter = this.markedPrevRecordIter;
-            this.recordIter.reset();
+            if (this.savedPageUsed) {
+                this.pageIter.next();
+            }
+            this.prevRecordIdIter = null;
+            this.recordIdIter = this.markedPrevRecordIdIter;
+            this.recordIdIter.reset();
         }
     }
 

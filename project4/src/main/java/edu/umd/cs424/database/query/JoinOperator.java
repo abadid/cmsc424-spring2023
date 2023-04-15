@@ -10,6 +10,7 @@ import edu.umd.cs424.database.common.BacktrackingIterator;
 import edu.umd.cs424.database.databox.DataBox;
 import edu.umd.cs424.database.databox.Type;
 import edu.umd.cs424.database.io.Page;
+import edu.umd.cs424.database.io.PageAllocator.PageIterator;
 import edu.umd.cs424.database.table.Record;
 import edu.umd.cs424.database.table.RecordId;
 import edu.umd.cs424.database.table.RecordIterator;
@@ -146,7 +147,7 @@ public abstract class JoinOperator extends QueryOperator {
         return this.transaction.getSchema(tableName);
     }
 
-    public Iterator<Page> getPageIterator(String tableName) throws DatabaseException {
+    public PageIterator getPageIterator(String tableName) throws DatabaseException {
         return this.transaction.getPageIterator(tableName);
     }
 

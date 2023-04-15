@@ -8,15 +8,11 @@ import edu.umd.cs424.database.databox.DataBox;
 import edu.umd.cs424.database.table.Record;
 import edu.umd.cs424.database.table.RecordIterator;
 
+/**
+ * Performs an equijoin between two relations on leftColumnName and
+ * rightColumnName respectively using the Simple Nested Loop Join algorithm.
+ */
 public class SNLJOperator extends JoinOperator {
-    private QueryOperator leftSource;
-    private QueryOperator rightSource;
-    private int leftColumnIndex;
-    private int rightColumnIndex;
-    private String leftColumnName;
-    private String rightColumnName;
-    private Database.Transaction transaction;
-
     public SNLJOperator(QueryOperator leftSource,
                         QueryOperator rightSource,
                         String leftColumnName,
@@ -28,9 +24,6 @@ public class SNLJOperator extends JoinOperator {
               rightColumnName,
               transaction,
               JoinType.SNLJ);
-
-        this.leftColumnName = getLeftColumnName();
-        this.rightColumnName = getRightColumnName();
 
         this.stats = this.estimateStats();
         this.cost = this.estimateIOCost();
@@ -50,123 +43,81 @@ public class SNLJOperator extends JoinOperator {
     }
 
     /**
-     * An implementation of Iterator that provides an iterator interface for this operator.
-     * Note that the left table is the "outer" loop and the right table is the "inner" loop.
+     * A record iterator that executes the logic for a simple nested loop join.
+     * Note that the left table is the "outer" loop and the right table is the
+     * "inner" loop.
      */
     private class SNLJIterator extends JoinIterator {
-        private RecordIterator leftIterator;
-        private RecordIterator rightIterator;
+        // Iterator over all the records of the left relation
+        private RecordIterator leftSourceIterator;
+        // Iterator over all the records of the right relation
+        private RecordIterator rightSourceIterator;
+        // The current record from the left relation
         private Record leftRecord;
-        private Record rightRecord;
+        // The next record to return
         private Record nextRecord;
 
         public SNLJIterator() throws QueryPlanException, DatabaseException {
             super();
-            this.rightIterator = SNLJOperator.this.getRecordIterator(this.getRightTableName());
-            this.leftIterator = SNLJOperator.this.getRecordIterator(this.getLeftTableName());
+            this.leftSourceIterator = SNLJOperator.this.getRecordIterator(this.getLeftTableName());
+            if (this.leftSourceIterator.hasNext()) {
+                this.leftRecord = this.leftSourceIterator.next();
+            }
 
-            this.nextRecord = null;
-
-            this.leftRecord = leftIterator.hasNext() ? leftIterator.next() : null;
-            this.rightRecord = rightIterator.hasNext() ? rightIterator.next() : null;
-
-            // We mark the first record so we can reset to it when we advance the left record.
-            if (rightRecord != null) {
-                rightIterator.mark();
-            } else { return; }
-
-            try {
-                fetchNextRecord();
-            } catch (DatabaseException e) {
-                this.nextRecord = null;
+            this.rightSourceIterator = SNLJOperator.this.getRecordIterator(this.getRightTableName());
+            if (this.rightSourceIterator.hasNext()) {
+                this.rightSourceIterator.next();
+                this.rightSourceIterator.mark();
+                this.rightSourceIterator.reset();
             }
         }
 
         /**
-         * After this method is called, rightRecord will contain the first record in the rightSource.
-         * There is always a first record. If there were no first records (empty rightSource)
-         * then the code would not have made it this far. See line 69.
+         * Returns the next record that should be yielded from this join,
+         * or null if there are no more records to join.
          */
-        private void resetRightRecord() {
-            this.rightIterator.reset();
-            assert(rightIterator.hasNext());
-            rightRecord = rightIterator.next();
-            rightIterator.mark();
-        }
+        private Record fetchNextRecord() {
+            if (leftRecord == null) {
+                // The left source was empty, nothing to fetch
+                return null;
+            }
+            while (true) {
+                if (this.rightSourceIterator.hasNext()) {
+                    // there's a next right record, join it if there's a match
+                    Record rightRecord = rightSourceIterator.next();
 
-        /**
-         * Advances the left record
-         *
-         * The thrown exception means we're done: there is no next record
-         * It causes this.fetchNextRecord (the caller) to hand control to its caller.
-         * Exceptions can be a way to force the parent to "return" (with simple logic).
-         * @throws DatabaseException
-         */
-        private void nextLeftRecord() throws DatabaseException {
-            if (!leftIterator.hasNext()) { throw new DatabaseException("All Done!"); }
-            leftRecord = leftIterator.next();
-        }
-
-        /**
-         * Pre-fetches what will be the next record, and puts it in this.nextRecord.
-         * Pre-fetching simplifies the logic of this.hasNext() and this.next()
-         * @throws DatabaseException
-         */
-        private void fetchNextRecord() throws DatabaseException {
-            if (this.leftRecord == null) { throw new DatabaseException("No new record to fetch"); }
-            this.nextRecord = null;
-            do {
-                if (this.rightRecord != null) {
-                    DataBox leftJoinValue = this.leftRecord.getValues().get(SNLJOperator.this.getLeftColumnIndex());
+                    DataBox leftJoinValue = leftRecord.getValues().get(SNLJOperator.this.getLeftColumnIndex());
                     DataBox rightJoinValue = rightRecord.getValues().get(SNLJOperator.this.getRightColumnIndex());
                     if (leftJoinValue.equals(rightJoinValue)) {
                         List<DataBox> leftValues = new ArrayList<>(this.leftRecord.getValues());
                         List<DataBox> rightValues = new ArrayList<>(rightRecord.getValues());
                         leftValues.addAll(rightValues);
-                        this.nextRecord = new Record(leftValues);
+                        return new Record(leftValues);
                     }
-                    this.rightRecord = rightIterator.hasNext() ? rightIterator.next() : null;
+                } else if (leftSourceIterator.hasNext()){
+                    // there's no more right records but there's still left
+                    // records. Advance left and reset right
+                    this.leftRecord = leftSourceIterator.next();
+                    this.rightSourceIterator.reset();
                 } else {
-                    nextLeftRecord();
-                    resetRightRecord();
+                    // if you're here then there are no more records to fetch
+                    return null;
                 }
-            } while (!hasNext());
+            }
         }
 
-        /**
-         * Checks if there are more record(s) to yield
-         *
-         * @return true if this iterator has another record to yield, otherwise false
-         */
+        @Override
         public boolean hasNext() {
+            if (this.nextRecord == null) this.nextRecord = fetchNextRecord();
             return this.nextRecord != null;
         }
 
-        /**
-         * Yields the next record of this iterator.
-         *
-         * @return the next Record
-         * @throws NoSuchElementException if there are no more Records to yield
-         */
+        @Override
         public Record next() {
-            if (!this.hasNext()) {
-                throw new NoSuchElementException();
-            }
-
+            if (!this.hasNext()) throw new NoSuchElementException();
             Record nextRecord = this.nextRecord;
-            try {
-                this.fetchNextRecord();
-            } catch (DatabaseException e) {
-                this.nextRecord = null;
-            }
+            this.nextRecord = null;
             return nextRecord;
         }
-
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
-
     }
-
 }
-

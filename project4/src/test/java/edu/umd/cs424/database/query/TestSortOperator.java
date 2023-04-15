@@ -25,7 +25,7 @@ import org.junit.rules.Timeout;
 
 import static org.junit.Assert.*;
 
-@Category(Proj5Tests.class)
+@Category(ProjTests.class)
 public class TestSortOperator {
     @Ignore
     public static class SortRecordComparator implements Comparator<Record> {

@@ -29,7 +29,7 @@ import org.junit.rules.Timeout;
 
 import static org.junit.Assert.*;
 
-@Category(Proj5Tests.class)
+@Category(ProjTests.class)
 public class TestJoinOperator {
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
@@ -295,7 +295,6 @@ public class TestJoinOperator {
     @Category(PublicTests.class)
     public void testSortMergeJoinUnsortedInputs() throws QueryPlanException, DatabaseException,
         IOException {
-        TestSourceOperator sourceOperator = new TestSourceOperator();
         File tempDir = tempFolder.newFolder("joinTest");
         Database d = new Database(tempDir.getAbsolutePath(), 3);
         Database.Transaction transaction = d.beginTransaction();

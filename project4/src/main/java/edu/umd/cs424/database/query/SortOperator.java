@@ -6,7 +6,7 @@ import edu.umd.cs424.database.databox.DataBox;
 import edu.umd.cs424.database.table.Record;
 import edu.umd.cs424.database.table.Schema;
 import edu.umd.cs424.database.common.Pair;
-import edu.umd.cs424.database.io.Page;
+import edu.umd.cs424.database.io.PageAllocator.PageIterator;
 
 import java.util.*;
 
@@ -63,33 +63,43 @@ public class SortOperator {
     }
 
     /**
-     * Returns a NEW run that is the sorted version of the input run.
-     * Can do an in memory sort over all the records in this run
-     * using one of Java's built-in sorting methods.
-     * Note: Don't worry about modifying the original run.
-     * Returning a new run would bring one extra page in memory beyond the
-     * size of the buffer, but it is done this way for ease.
+     * Returns a Run containing records from the input iterator in sorted order.
+     * You're free to use an in memory sort over all the records using one of
+     * Java's built-in sorting methods.
+     *
+     * Return a single sorted run containing all the records from the input
+     * iterator
      */
     public Run sortRun(Run run) throws DatabaseException {
         throw new UnsupportedOperationException("Implement this.");
     }
 
     /**
-     * Given a list of sorted runs, returns a new run that is the result
-     * of merging the input runs. You should use a Priority Queue (java.util.PriorityQueue)
-     * to determine which record should be should be added to the output run next.
-     * It is recommended that your Priority Queue hold Pair<Record, Integer> objects
-     * where a Pair (r, i) is the Record r with the smallest value you are
-     * sorting on currently unmerged from run i.
+     * Given a list of sorted runs, returns a new run that is the result of
+     * merging the input runs. You should use a Priority Queue (java.util.PriorityQueue)
+     * to determine which record should be should be added to the output run
+     * next.
+     *
+     * You are NOT allowed to have more than runs.size() records in your
+     * priority queue at a given moment. It is recommended that your Priority
+     * Queue hold Pair<Record, Integer> objects where a Pair (r, i) is the
+     * Record r with the smallest value you are sorting on currently unmerged
+     * from run i. `i` can be useful to locate which record to add to the queue
+     * next after the smallest element is removed.
+     *
+     * Return a single sorted run obtained by merging the input runs
      */
     public Run mergeSortedRuns(List<Run> runs) throws DatabaseException {
         throw new UnsupportedOperationException("Implement this.");
     }
 
     /**
-     * Given a list of N sorted runs, returns a list of
-     * sorted runs that is the result of merging (numBuffers - 1)
-     * of the input runs at a time.
+     * Given a list of N sorted runs, returns a list of sorted runs that is the
+     * result of merging (numBuffers - 1) of the input runs at a time. If N is
+     * not a perfect multiple of (numBuffers - 1) the last sorted run should be
+     * the result of merging less than (numBuffers - 1) runs.
+     *
+     * Return a list of sorted runs obtained by merging the input runs
      */
     public List<Run> mergePass(List<Run> runs) throws DatabaseException {
         throw new UnsupportedOperationException("Implement this.");
@@ -117,6 +127,7 @@ public class SortOperator {
 
         }
     }
+
     public Run createRun() throws DatabaseException {
         return new Run();
     }

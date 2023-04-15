@@ -15,13 +15,10 @@ import edu.umd.cs424.database.categories.*;
 import edu.umd.cs424.database.concurrency.DummyLockContext;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.rules.TemporaryFolder;
-import org.junit.runners.MethodSorters;
 
 import edu.umd.cs424.database.DatabaseException;
 import edu.umd.cs424.database.TestUtils;
@@ -30,7 +27,7 @@ import edu.umd.cs424.database.databox.IntDataBox;
 import edu.umd.cs424.database.databox.Type;
 import edu.umd.cs424.database.io.Page;
 
-@Category(Proj5Tests.class)
+@Category(ProjTests.class)
 public class TestTable {
     public static final String TABLENAME = "testtable";
     private Table table;
@@ -174,7 +171,6 @@ public class TestTable {
         }
 
         for (int i = 0; i < table.getNumRecordsPerPage() * 3; ++i) {
-            Record r = createRecordWithAllTypes(i);
             table.deleteRecord(null, rids.get(i));
         }
         table.cleanup(null);
@@ -185,7 +181,6 @@ public class TestTable {
         }
 
         for (int i = 0; i < table.getNumRecordsPerPage() * 3; ++i) {
-            Record r = createRecordWithAllTypes(i);
             table.deleteRecord(null, rids.get(i));
         }
     }
@@ -294,7 +289,7 @@ public class TestTable {
      * needed.
      */
     private int setupIteratorTest(int pages) throws DatabaseException {
-        List<RecordId> rids = new ArrayList();
+        List<RecordId> rids = new ArrayList<>();
         return setupIteratorTest(rids, pages);
     }
 
@@ -336,7 +331,7 @@ public class TestTable {
     @Test
     @Category(PublicTests.class)
     public void testRIDPageIteratorWithGaps() throws DatabaseException {
-        List<RecordId> rids = new ArrayList();
+        List<RecordId> rids = new ArrayList<>();
         int numRecords = setupIteratorTest(rids, 1);
 
         // Delete every other record and the last record.

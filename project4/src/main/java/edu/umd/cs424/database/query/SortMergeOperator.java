@@ -47,10 +47,8 @@ public class SortMergeOperator extends JoinOperator {
         * You're free to use these member variables, but you're not obligated to.
         */
 
-        private String leftTableName;
-        private String rightTableName;
-        private RecordIterator leftIterator;
-        private RecordIterator rightIterator;
+        private RecordIterator leftSourceIterator;
+        private RecordIterator rightSourceIterator;
         private Record leftRecord;
         private Record nextRecord;
         private Record rightRecord;
@@ -58,40 +56,47 @@ public class SortMergeOperator extends JoinOperator {
 
         public SortMergeIterator() throws QueryPlanException, DatabaseException {
             super();
-            throw new UnsupportedOperationException("Implement this.");
+            SortOperator l = new SortOperator(
+                SortMergeOperator.this.getTransaction(), this.getLeftTableName(), new LeftRecordComparator());
+            SortOperator r = new SortOperator(
+                SortMergeOperator.this.getTransaction(), this.getRightTableName(), new RightRecordComparator());
+
+            this.leftSourceIterator = SortMergeOperator.this.getRecordIterator(l.sort());
+            if (this.leftSourceIterator.hasNext()) {
+                this.leftRecord = this.leftSourceIterator.next();
+            }
+
+            this.rightSourceIterator = SortMergeOperator.this.getRecordIterator(r.sort());
+            if (this.rightSourceIterator.hasNext()) {
+                this.rightRecord = this.rightSourceIterator.next();
+                this.rightSourceIterator.mark(); 
+            }
         }
 
-        private void resetRightRecord() {
-            this.rightIterator.reset();
-            assert(rightIterator.hasNext());
-            rightRecord = rightIterator.next();
-            rightIterator.mark();
-        }
-
-        private void nextLeftRecord() throws DatabaseException {
-            if (!leftIterator.hasNext()) { throw new DatabaseException("All Done!"); }
-            leftRecord = leftIterator.next();
-        }
-
-        private void fetchNextRecord() throws DatabaseException {
-            if (this.leftRecord == null) { throw new DatabaseException("No new record to fetch"); }
-            this.nextRecord = null;
-            do {
+        private Record fetchNextRecord() {
+            if (leftRecord == null) {
+                return null;
+            }
+            
+            while (true) {
                 if (this.rightRecord != null) {
-                    DataBox leftJoinValue = this.leftRecord.getValues().get(SortMergeOperator.this.getLeftColumnIndex());
-                    DataBox rightJoinValue = this.rightRecord.getValues().get(SortMergeOperator.this.getRightColumnIndex());
-                    if (leftJoinValue.equals(rightJoinValue)) {
-                        List<DataBox> leftValues = new ArrayList<>(this.leftRecord.getValues());
-                        List<DataBox> rightValues = new ArrayList<>(rightRecord.getValues());
-                        leftValues.addAll(rightValues);
-                        this.nextRecord = new Record(leftValues);
-                    }
-                    this.rightRecord = rightIterator.hasNext() ? rightIterator.next() : null;
-                } else {
-                    nextLeftRecord();
-                    resetRightRecord();
+                    // Advance the right record until it is greater than or equal to the left record.
+                    // Mark the right source such that we can later reset to the last right record that
+                    // is less than the left record.
+                    throw new UnsupportedOperationException("Implement this.");
                 }
-            } while (!hasNext());
+                
+                if (this.rightRecord != null && lr_comparator.compare(this.leftRecord, this.rightRecord) == 0) {
+                    // Join the left and right record and return the result. The right record must be
+                    // advanced before returning.
+                    throw new UnsupportedOperationException("Implement this.");
+                } else if (this.leftSourceIterator.hasNext()) {
+                    // Advance the left record and reset the right record.
+                    throw new UnsupportedOperationException("Implement this.");
+                } else {
+                    return null;
+                }
+            }
         }
 
         /**
@@ -100,7 +105,8 @@ public class SortMergeOperator extends JoinOperator {
          * @return true if this iterator has another record to yield, otherwise false
          */
         public boolean hasNext() {
-            throw new UnsupportedOperationException("Implement this.");
+            if (this.nextRecord == null) this.nextRecord = fetchNextRecord();
+            return this.nextRecord != null;
         }
 
         /**
@@ -110,7 +116,10 @@ public class SortMergeOperator extends JoinOperator {
          * @throws NoSuchElementException if there are no more Records to yield
          */
         public Record next() {
-            throw new UnsupportedOperationException("Implement this.");
+            if (!this.hasNext()) throw new NoSuchElementException();
+            Record nextRecord = this.nextRecord;
+            this.nextRecord = null;
+            return nextRecord;
         }
 
         public void remove() {
