@@ -32,7 +32,7 @@ Navigate to the `src/main/java/edu/umd/cs424/database` directory. You
 will find six directories: `common`, `databox`, `io`, `table`, `index`, and `query`, and two files, `Database` and `DatabaseException`.
 You do not have to deeply understand all of the code, but it's worth becoming a little
 familiar with it. **In this assignment, though, you may only modify files in
-the `query` and `table` directories**. See the project 3 specification for information on `databox`, `io`, and `index`.
+the `query` and `table` directories**.
 
 ### common
 
@@ -72,7 +72,7 @@ The `query` directory contains what are called query operators. These are operat
 
 ## Your Tasks
 
-You need to implement all unsupported operatons which are marked by:
+You need to implement all unsupported operators which are marked by:
 
 ```java
 throw new UnsupportedOperationException("Implement this.");
@@ -82,15 +82,13 @@ We use additional tests to evaluate your solution (in addition to the ones we ar
 
 ### 1. Table Iterators
 
-In the `table` directory, fill in the classes `Table#RIDPageIterator` and `Table#RIDBlockIterator`. The tests in `TestTable` should pass once this is complete.
+In the `table` directory, fill in the class `Table#RIDPageIterator`. The tests in `TestTable` should pass once this is complete.
 
-**Hint:** To fill in these two iterators, you can start from reading the description of storage format and bitmap in [Table.java#L22-L95](https://github.com/abadid/cmsc424-spring2019/blob/77c6580914f913b5c4e7684cf31210f2cef89548/project5/src/main/java/edu/umd/cs424/database/table/Table.java#L22-L95).
-
-*Note on testing*: If you wish to write your own tests on `Table#RIDBlockIterator`, be careful with using the `Iterator<Page> block, int maxPages` constructor: you have to get a new `Iterator<Page>` if you want to recreate the iterator in the same test.
+**Hint:** To fill in this iterator, you can start from reading the description of storage format and bitmap at the beginning of the Table class (line 21) in Table.java.
 
 ### 2. Nested Loops Joins
 
-There are three types of join algorithms in the codebase (See section 12.5.2 of the textbook):
+There are three types of join algorithms in the codebase (See section 15.5.2 of the textbook):
 
 - SNLJ: Simple Nested Loop Join
 - BNLJ: Block Nested Loop Join
@@ -103,7 +101,7 @@ The notion of a `block` when discussing join algorithms is different however. A 
 Sometimes BNLJ is also called PNLJ. Similarly, BNLJOptimized is called BNLJ.
 
 **Hint:** BNLJ and BNLJOptimized extend from `JoinOperator`. You should be familiar with this class, it contains some useful methods which can help you get the different iterators such as `getPageIterator`, `getRecordIterator` and `getBlockIterator`. 
-**NOTE:** BNLJOptimized needs to get numBuffer pages at a time, you may use that number from `BNLJOptimizedOperator`.
+**NOTE:** BNLJOptimized needs access to numBuffer, you may use that number from `BNLJOptimizedOperator`.
 
 ### 3: External Sort
 
@@ -111,16 +109,11 @@ Complete implementing `SortOperator.java`. The tests in `TestSortOperator` shoul
 
 **Besides when the comments tell you that you can do something in memory, everything else should be streamed. You should not hold more pages in memory at once than the given algorithm says you are allowed to.**
 
-**Hint:** To get numBuffer pages of records at a time, you need to get `PageIterator` by `transaction.getPageIterator`, then pass pageIterator and numBuffers to `transaction.getBlockIterator`.
+**Hint:** To get `numBuffer` pages of records at a time, you need to get `PageIterator` by `transaction.getPageIterator`, then pass `pageIterator` and `numBuffers` to `transaction.getBlockIterator`.
 
 ### 4: Sort Merge Join
 
-Complete implementing `SortMergeOperator.java`. The sort phase of this join should use your previously implemented `SortOperator#sort` method. Note that we do not do the optimization discussed in lecture where the join happens during the last pass of sorting the two tables. We keep the sort phase completely separate from the join phase. The SortMerge tests in `TestJoinOperator` should pass once this is complete.
-
-In the additional tests we run on your codebase, we may test `SortMergeOperator` independently of `SortOperator` by replacing your sort with the staff solution, so make sure it functions as described.
-
-**Hint:** To merge join two tables, you have to construct two `SortOperator`s for them respectively. You may use `LeftRecordComparator` and `RightRecordComparator` to construct them.
-
+Complete implementing `SortMergeOperator.java`. The SortMerge tests in `TestJoinOperator` should pass once this is complete.
 
 ## Testing
 
@@ -129,11 +122,7 @@ unit tests we have provided to you.
 
 Remember the test cases we give you are not comprehensive, so you should write your own tests to further test your code and catch edge cases.
 
-The tests we provide to you for this project are under `TestTable` for part 1, `TestJoinOperator` for parts 2 and 4, and `TestSortOperator` for part 3. If you are running tests from the terminal (and not an IDE), you can pass `-Dtest=TestName` to `mvn test` to only run a single file of tests.
-
-```bash
-mvn clean test -D Proj=4
-```
+The tests we provide to you for this project are under `TestTable` for part 1, `TestJoinOperator` for parts 2 and 4, and `TestSortOperator` for part 3. 
 
 ## Submitting
 
