@@ -83,15 +83,18 @@ public class SortMergeOperator extends JoinOperator {
                     // Advance the right record until it is greater than or equal to the left record.
                     // Mark the right source such that we can later reset to the last right record that
                     // is less than the left record.
-                    throw new UnsupportedOperationException("Implement this.");
+                    while (this.rightSourceIterator.hasNext() && lr_comparator.compare(this.leftRecord, this.rightRecord) > 0) {
+                        this.rightSourceIterator.mark();
+                        this.rightRecord = this.rightSourceIterator.next();
+                    } 
                 }
                 
                 if (this.rightRecord != null && lr_comparator.compare(this.leftRecord, this.rightRecord) == 0) {
                     // Join the left and right record and return the result. The right record must be
-                    // advanced before returning.
+                    // advanced before returning. If there is no more right record, set it to null.
                     throw new UnsupportedOperationException("Implement this.");
                 } else if (this.leftSourceIterator.hasNext()) {
-                    // Advance the left record and reset the right record.
+                    // Advance the left record by one and reset the right record.
                     throw new UnsupportedOperationException("Implement this.");
                 } else {
                     return null;
