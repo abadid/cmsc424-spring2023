@@ -47,7 +47,7 @@ cd /home/project-bonus/matchapp
 
 After executing the commands listed above, navigate to the page localhost:8080 in your browser. If you still see the Tomcat page, wait for a few seconds and refresh, you will eventually see the following page.
 
-![screenshot](screenshot.png)
+![screenshot](Screenshot.png)
 
  Take some time to view the different pages and examine the format of the website. You may see some error messages until you get the database set up.
 
