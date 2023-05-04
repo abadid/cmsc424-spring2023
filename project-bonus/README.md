@@ -1,4 +1,4 @@
-## Project 3: Matchapp (JDBC Manipulation), CMSC424, Spring 2023
+## Bonus Project: Matchapp (JDBC Manipulation), CMSC424, Spring 2023
 
 *This project is to be done individually.*
 
@@ -30,18 +30,18 @@ Make sure to run this every time you change your code in order to recompile it. 
 
 ## **Getting Started**
 
-Similar to Project0, you will build the container with `docker build -t "cmsc424-project3" .` in the `project3` directory. Next you will need to start the container using `docker run -v "${PWD}:/home/project3" -ti -p 8080:8080 --name project3  cmsc424-project3:latest` (if you're using cmd on Windows, replace `${PWD}` with `%cd%`). 
+Similar to Project0, you will build the container with `docker build -t "cmsc424-project-bonus" .` in the `project-bonus` directory. Next you will need to start the container using `docker run -v "${PWD}:/home/project-bonus" -ti -p 8080:8080 --name project-bonus  cmsc424-project-bonus:latest` (if you're using cmd on Windows, replace `${PWD}` with `%cd%`). 
 You can restart the container with the following commands:
 
-   `docker start project3`
-   `docker exec -it project3 /bin/bash`
+   `docker start project-bonus`
+   `docker exec -it project-bonus /bin/bash`
 
 
 You can quickly start your web application through the following commands:
 
 ```bash
 /opt/tomcat/bin/startup.sh 
-cd /home/project3/matchapp
+cd /home/project-bonus/matchapp
 ./build.sh 
 ```
 
@@ -57,7 +57,7 @@ More technical details are given in the section below. We will be using tomcat t
 
 * `/opt/tomcat/bin/shutdown.sh`:  Stops your server
 
-* `./build.sh`:  When executed in the `/home/project3/matchapp` directory, builds all necessary files and copies your **ROOT.war** file to the right tomcat directory.
+* `./build.sh`:  When executed in the `/home/project-bonus/matchapp` directory, builds all necessary files and copies your **ROOT.war** file to the right tomcat directory.
 
 * ` tail /opt/tomcat/logs/catalina.out`: Checks log file of tomcat server
 
@@ -85,7 +85,7 @@ Here is which files correspond to which links on the website:
 We already created a database called `matchapp` for you. You should run `\i students.sql` from the psql interface to insert tuples. Make sure you are in the `/home/projec3` directory when you enter the database (`psql matchapp`).
 
 ```bash
-$ cd /home/project3
+$ cd /home/project-bonus
 $ psql matchapp
 matchapp=# \i students.sql
 matchapp=# \q
@@ -191,7 +191,7 @@ public static void main(String [] args) {
 To run `Student.java`:
 
 ```bash
-cd /home/project3/matchapp
+cd /home/project-bonus/matchapp
 ./build.sh
 cd src/WEB-INF
 java -classpath "lib/*:classes/.:." com.match.model.Student

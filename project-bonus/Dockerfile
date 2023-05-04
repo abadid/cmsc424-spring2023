@@ -43,10 +43,10 @@ RUN curl -O -L https://github.com/AKSarav/SampleWebApp/raw/master/dist/SampleWeb
 
 EXPOSE 8080
 
-COPY ./matchapp /home/project3/matchapp
-ADD students.sql /home/project3/
-WORKDIR /home/project3/matchapp
+COPY ./matchapp /home/project-bonus/matchapp
+ADD students.sql /home/project-bonus/
+WORKDIR /home/project-bonus/matchapp
 RUN chmod +x build.sh
 
-WORKDIR /home/project3/
+WORKDIR /home/project-bonus/
 ENTRYPOINT service postgresql start && /bin/bash
