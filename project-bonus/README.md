@@ -160,7 +160,7 @@ You will need to complete the following methods in the `Student.java` model file
 
 * **addStudent(String first, String last, String email, String student_type):** Add a student with the specified values in the student table. Should leave advisor_id null.  (1.5pts)
 
-* **getMentorMatches(String id):** Get everyone who can mentor this student. Should use your `computeOrganMatch()` to check the compatibility of each potential match. (1.15pts)
+* **getMentorMatches(String id):** Get everyone who can mentor this student. Should use your `computeOrganMatch()` to check the compatibility of each potential match. (1.5pts)
 
 * **addMentorNeeded(Field f, int sid):** Add a needed mentor to the database for the given student and field. (1.5pts)
 
