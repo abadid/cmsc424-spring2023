@@ -26,8 +26,11 @@ public class AddOffer extends HttpServlet {
     Then, send the status and new advisor as URL parameters in the redirect
     */
 
-    // status should be the code returned from addMentorAvailable and advisor should be the advisor's id returned from getAdvisorUpdate.
-    // There is no need to update advisor if addMentorAvailable fails.
+    /*
+    status should be the code returned from addMentorAvailable
+    and advisor should be the advisor's id returned from getAdvisorUpdate.
+    There is no need to update advisor if addMentorAvailable fails.
+    */
 
     int status = -1;
     int advisor = -1;

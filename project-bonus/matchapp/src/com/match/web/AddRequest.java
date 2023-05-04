@@ -15,8 +15,9 @@ import org.apache.logging.log4j.Logger;
 
 public class AddRequest extends HttpServlet {
   private static final Logger logger = LogManager.getLogger("match");
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NumberFormatException {
 
+  public void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException, NumberFormatException {
     //Gets the string data of all of the fields in the form to register
     String id = request.getParameter("id");
     String field = request.getParameter("field");
@@ -28,15 +29,17 @@ public class AddRequest extends HttpServlet {
     */
 
 
-      // status should be the code returned from addMentorNeeded and advisor should be the advisor's id returned from getAdvisorUpdate.
-      // There is no need to update advisor if addMentorNeeded fails.
+    /* 
+    status should be the code returned from addMentorNeeded
+    and advisor should be the advisor's id returned from getAdvisorUpdate.
+    There is no need to update advisor if addMentorNeeded fails.
+    */
 
-      int status = -1;
-      int advisor = -1;
+    int status = -1;
+    int advisor = -1;
 
-      response.sendRedirect("request?status=" + status + "&advisor=" + advisor);
+    response.sendRedirect("request?status=" + status + "&advisor=" + advisor);
   
-
 
   }
 }

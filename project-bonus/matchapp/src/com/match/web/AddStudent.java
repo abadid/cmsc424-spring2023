@@ -19,7 +19,7 @@ public class AddStudent extends HttpServlet {
     //Gets the string data of all of the fields in the form
     String first = request.getParameter("first");
     String last = request.getParameter("last");
-    String birthdate = request.getParameter("email");
+    String email = request.getParameter("email");
     String studenttype = request.getParameter("type");
 
     /*
@@ -41,7 +41,7 @@ public class AddStudent extends HttpServlet {
 
         //Here we make the call to the addStudent method in Student.java that connects to the database and inserts the student with the given values
         // If that's successful, update their advisor with getAdvisorFirst, which is also in person.java.
-        // id should be the id returned from addPerson, and doc should be the doctor's id returned from getDoctorFirst.
+        // id should be the id returned from addStudent, and advisor should be the advisor's id returned from getAdvisorFirst.
 
         int id = -1;
         int advisor = -1;
