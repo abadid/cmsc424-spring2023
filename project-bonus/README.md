@@ -148,31 +148,31 @@ matchapp=# \q
 
 # Your Tasks
 
-## **Person.java: Back-end + DB (34 points)**
+## **Person.java: Back-end + DB (17 points)**
 
 You will need to complete the following methods in the `Student.java` model file that interfaces with the `students table` in the matchapp database. We have already completed a few of these methods, including the constructors as well as functions that interface with your database remotely and locally. You have to complete:
 
-* **getStudents():** Get a list of all the students in the database. (3pts)
+* **getStudents():** Get a list of all the students in the database. (1.5pts)
 
-* **getStudent(String sid):** Get a specific student given a value for the id attribute. (3pts)
+* **getStudent(String sid):** Get a specific student given a value for the id attribute. (1.5pts)
 
-* **getStudentSearch(String substring):** Return students in the student table that have an attribute that have a substring match with the query. (3pts)
+* **getStudentSearch(String substring):** Return students in the student table that have an attribute that have a substring match with the query. (1.5pts)
 
-* **addStudent(String first, String last, String email, String student_type):** Add a student with the specified values in the student table. Should leave advisor_id null.  (3pts)
+* **addStudent(String first, String last, String email, String student_type):** Add a student with the specified values in the student table. Should leave advisor_id null.  (1.5pts)
 
-* **getMentorMatches(String id):** Get everyone who can mentor this student. Should use your `computeOrganMatch()` to check the compatibility of each potential match. (3pts)
+* **getMentorMatches(String id):** Get everyone who can mentor this student. Should use your `computeOrganMatch()` to check the compatibility of each potential match. (1.15pts)
 
-* **addMentorNeeded(Field f, int sid):** Add a needed mentor to the database for the given student and field. (3pts)
+* **addMentorNeeded(Field f, int sid):** Add a needed mentor to the database for the given student and field. (1.5pts)
 
-* **addMentorAvailable(Field f, int sid):** Add an available mentor to the database for given student and field. (3pts)
+* **addMentorAvailable(Field f, int sid):** Add an available mentor to the database for given student and field. (1.5pts)
 
-* **computeMentorMatch(int menteeID, int mentorID):** Check if the two people given are compatible for a mentorship. (4pts)
+* **computeMentorMatch(int menteeID, int mentorID):** Check if the two people given are compatible for a mentorship. (2pts)
 
-* **getStudentWithAdvisor(int sid)** Return a Student object with the advisor details filled into the corresponding variables.(3pts)
+* **getStudentWithAdvisor(int sid)** Return a Student object with the advisor details filled into the corresponding variables.(1.5pts)
 
-* **getAdvisorFirst(int sid):** Assign an advisor to a newly registered student. See the method comments for more details on how to do that. (3pts)
+* **getAdvisorFirst(int sid):** Assign an advisor to a newly registered student. See the method comments for more details on how to do that. (1.5pts)
 
-* **getAdvisorUpdate(Field f,int sid):** Assign a new advisor to someone who registers a field. See the method comments for more details on how to do that. (3pts)
+* **getAdvisorUpdate(Field f,int sid):** Assign a new advisor to someone who registers a field. See the method comments for more details on how to do that. (1.5pts)
 
 
 The `Student.java` file has comments above each method with more details about what each method should do. We will be testing each of these methods individually to ensure that they produce the output as specified by the comments above each method on a database with different students and advisors that we make. The data we test it on will be exactly the same as the form we have given to you in `students.sql` --- only the actual values will be different.  
@@ -203,7 +203,7 @@ java -classpath "lib/*:classes/.:." com.match.model.Student
 
 [Prepared Statements](https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html)
 
-## **Connecting Back-end + Front-end (6 points)**
+## **Connecting Back-end + Front-end (3 points)**
 
 Now that you have successfully finished the majority of the back-end (logic tier) components, you will now have to hook up the back-end with the front-end components. This process will be done via the Java files in the **matchapp/src/com/match/web** directory. You will complete the TODO stubs found in the `doPost()` methods of **AddStudent.java**, **AddOffer.java**, and **AddRequest.java**.
 
