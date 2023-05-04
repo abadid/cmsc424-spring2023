@@ -21,6 +21,7 @@ RUN echo "listen_addresses = '*'" >> /etc/postgresql/13/main/postgresql.conf &&\
 
 USER postgres
 
+
 RUN /etc/init.d/postgresql start &&\
     createdb matchapp &&\
     psql --command "create user root;" matchapp &&\
@@ -34,12 +35,11 @@ RUN /etc/init.d/postgresql start &&\
 USER root 
 RUN mkdir /opt/tomcat/
 WORKDIR /opt/tomcat
-RUN curl -O https://downloads.apache.org/tomcat/tomcat-8/v8.5.87/bin/apache-tomcat-8.5.87.tar.gz
-RUN tar xvfz apache-tomcat-8.5.87.tar.gz 
-RUN mv apache-tomcat-8.5.87/* /opt/tomcat/.
+RUN curl -O https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.88/bin/apache-tomcat-8.5.88.tar.gz
+RUN tar xvfz apache-tomcat-8.5.88.tar.gz 
+RUN mv apache-tomcat-8.5.88/* /opt/tomcat/.
 
 WORKDIR /opt/tomcat/webapps
-RUN curl -O -L https://github.com/AKSarav/SampleWebApp/raw/master/dist/SampleWebApp.war
 
 EXPOSE 8080
 

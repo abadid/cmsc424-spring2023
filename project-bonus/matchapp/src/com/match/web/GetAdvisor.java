@@ -23,11 +23,18 @@ public class GetAdvisor extends SimpleTagSupport {
     //You write Student.getStudentWithAdvisor in Student class
     if (id != 0) {
       student = Student.getStudentWithAdvisor(id);
-      getJspContext().setAttribute("name", student.getAdvisorName());
-      getJspContext().setAttribute("field", student.getAdvisorField());
-      getJspContext().setAttribute("experience", student.getAdvisorExperience());
+      if (student == null) {
+        logger.error("Student with id " + id + " does not exist");
+        getJspContext().setAttribute("name", "Student");
+        getJspContext().setAttribute("field", "Not");
+        getJspContext().setAttribute("experience", "Found");
+      } else {
+        getJspContext().setAttribute("name", student.getAdvisorName());
+        getJspContext().setAttribute("field", student.getAdvisorField());
+        getJspContext().setAttribute("experience", student.getAdvisorExperience());
+      }
       getJspBody().invoke(null);
-    
+
     }
   }
 }

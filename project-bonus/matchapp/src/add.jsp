@@ -57,13 +57,21 @@
           id = "";
         }
         else {
-          id = "Your ID is " + id + " - Remember it!";
+          if (id.equals("-1")) {
+            id = "Unable to add student to the database!";
+          } else {
+           id = "Your ID is " + id + " - Remember it!";
+          }
         }
         if(advisor == null){
             advisor = "";
         }
-        else{
+        else {
+          if (advisor.equals("-1")) {
+            advisor = "Unable to assign advisor!";
+          } else {
             advisor = "Your advisor's id is " + advisor;
+          }
         }
       %>
       <p><%= id %> <br> <%= advisor %></p>

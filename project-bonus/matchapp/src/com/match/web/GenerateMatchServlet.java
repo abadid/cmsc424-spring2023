@@ -1,5 +1,5 @@
 package com.match.web;
-import com.match.model.Person;
+import com.match.model.Student;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
